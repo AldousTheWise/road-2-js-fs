@@ -1,0 +1,17 @@
+Commits usados profesionalmente:
+
+feat: agregar función saludar(nombre)
+fix: corregir error en saludo cuando falta nombre
+refactor: mover lógica de saludo a función separada
+docs: actualizar README con uso del script
+
+| Acción           | Comando                   |
+| ---------------- | ------------------------- |
+| Inicializar repo | `git init`                |
+| Ver estado       | `git status`              |
+| Agregar cambios  | `git add .`               |
+| Guardar commit   | `git commit -m "mensaje"` |
+| Ver historial    | `git log --oneline`       |
+| Crear rama       | `git checkout -b mi-rama` |
+| Volver a main    | `git checkout main`       |
+| Subir a GitHub   | `git push`                |
