@@ -1,0 +1,70 @@
+# ============================
+# Node
+# ============================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# ============================
+# Build / dist / cache
+# ============================
+dist/
+build/
+.cache/
+.eslintcache
+vite-dist/
+coverage/
+
+# Next.js
+.next/
+out/
+
+# Nuxt
+.nuxt/
+output/
+
+# Astro
+.astro/
+
+# ============================
+# Environment files
+# ============================
+.env
+.env.local
+.env.*.local
+
+# ============================
+# System / OS
+# ============================
+.DS_Store
+Thumbs.db
+
+# ============================
+# VSCode
+# ============================
+.vscode/
+*.code-workspace
+
+# ============================
+# Logs / Temp
+# ============================
+*.log
+logs/
+temp/
+.tmp/
+*.tmp
+*.swp
+
+# ============================
+# Misc
+# ============================
+*.bak
+*.old
+*.orig
+*.lock
+.idea/
