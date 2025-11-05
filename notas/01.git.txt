@@ -4,6 +4,7 @@ feat: agregar función saludar(nombre)
 fix: corregir error en saludo cuando falta nombre
 refactor: mover lógica de saludo a función separada
 docs: actualizar README con uso del script
+chore: realizar tarea fuera del código
 
 | Acción           | Comando                   |
 | ---------------- | ------------------------- |
