@@ -1,0 +1,145 @@
+# Transcripci�n D�a 4
+2025-11-06 14:41:03 - Inicio del flujo d�a 4
+**********************
+Inicio de la transcripci?n de Windows PowerShell
+Hora de inicio: 20251106144139
+Nombre de usuario: ALDOUSHIDE\Aldous
+Usuario RunAs: ALDOUSHIDE\Aldous
+Nombre de la configuraci?n: 
+M?quina: ALDOUSHIDE (Microsoft Windows NT 10.0.22631.0)
+Aplicaci?n host: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -noexit -command try { . "c:\Users\Aldous\AppData\Local\Programs\Microsoft VS Code\resources\app\out\vs\workbench\contrib\terminal\common\scripts\shellIntegration.ps1" } catch {}
+Id. de proceso: 752
+PSVersion: 5.1.22621.2506
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.22621.2506
+BuildVersion: 10.0.22621.2506
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+La transcripci?n ha comenzado. El archivo de salida es C:\DEVZONE\transcripciones\dia-4-transcripcion.txt
+]633;D;0]633;A]633;P;Cwd=C:\x5cDEVZONEPS C:\DEVZONE> ]633;B
+PS>cd road-2-js-fs\month-1-fundamentos-js\01-git-github
+]633;D;0]633;A]633;P;Cwd=C:\x5cDEVZONE\x5croad-2-js-fs\x5cmonth-1-fundamentos-js\x5c01-git-githubPS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github> ]633;B
+PS>mkdir dia-4-git-avanzado
+
+
+    Directorio: C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----        06-11-2025     14:43                dia-4-git-avanzado
+
+
+]633;D;0]633;A]633;P;Cwd=C:\x5cDEVZONE\x5croad-2-js-fs\x5cmonth-1-fundamentos-js\x5c01-git-githubPS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github> ]633;B
+PS>cd dia-4-git-avanzado
+]633;D;0]633;A]633;P;Cwd=C:\x5cDEVZONE\x5croad-2-js-fs\x5cmonth-1-fundamentos-js\x5c01-git-github\x5cdia-4-git-avanzadoPS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-4-git-avanzado> ]633;B
+PS>New-Item -Path mensaje.txt -ItemType File
+
+
+    Directorio:
+    C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-4-git-avanzado
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----        06-11-2025     14:44              0 mensaje.txt
+
+
+]633;D;0]633;A]633;P;Cwd=C:\x5cDEVZONE\x5croad-2-js-fs\x5cmonth-1-fundamentos-js\x5c01-git-github\x5cdia-4-git-avanzadoPS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-4-git-avanzado> ]633;B
+PS>et-Content -Path mensaje.txt -Value "Mensaje inicial del ejercicio" -Encoding utf8
+et-Content : El t?rmino 'et-Content' no se reconoce como nombre de un cmdlet, funci?n, archivo de script o programa 
+ejecutable. Compruebe si escribi? correctamente el nombre o, si incluy? una ruta de acceso, compruebe que dicha ruta es 
+correcta e int?ntelo de nuevo.
+En l?nea: 1 Car?cter: 1
++ et-Content -Path mensaje.txt -Value "Mensaje inicial del ejercicio" - ...
++ ~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (et-Content:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+et-Content : El t?rmino 'et-Content' no se reconoce como nombre de un cmdlet,
+funci?n, archivo de script o programa ejecutable. Compruebe si escribi?
+correctamente el nombre o, si incluy? una ruta de acceso, compruebe que dicha ruta
+es correcta e int?ntelo de nuevo.
+En l?nea: 1 Car?cter: 1
++ et-Content -Path mensaje.txt -Value "Mensaje inicial del ejercicio" - ...
++ ~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (et-Content:String) [], CommandNotFou
+   ndException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+]633;D;1]633;A]633;P;Cwd=C:\x5cDEVZONE\x5croad-2-js-fs\x5cmonth-1-fundamentos-js\x5c01-git-github\x5cdia-4-git-avanzadoPS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-4-git-avanzado> ]633;B
+PS>Set-Content -Path mensaje.txt -Value "Mensaje inicial del ejercicio" -Encoding utf8
+]633;D;0]633;A]633;P;Cwd=C:\x5cDEVZONE\x5croad-2-js-fs\x5cmonth-1-fundamentos-js\x5c01-git-github\x5cdia-4-git-avanzadoPS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-4-git-avanzado> ]633;B
+PS>git add mensaje.txt
+
+]633;D;0]633;A]633;P;Cwd=C:\x5cDEVZONE\x5croad-2-js-fs\x5cmonth-1-fundamentos-js\x5c01-git-github\x5cdia-4-git-avanzadoPS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-4-git-avanzado> ]633;B
+PS>git commit -m "feat(dia 4): archivo base en UTF-8 para simulaci?n de conflictos"
+
+]633;D;0]633;A]633;P;Cwd=C:\x5cDEVZONE\x5croad-2-js-fs\x5cmonth-1-fundamentos-js\x5c01-git-github\x5cdia-4-git-avanzadoPS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-4-git-avanzado> ]633;B
+PS>git checkout -b rama-A
+
+]633;D;0]633;A]633;P;Cwd=C:\x5cDEVZONE\x5croad-2-js-fs\x5cmonth-1-fundamentos-js\x5c01-git-github\x5cdia-4-git-avanzadoPS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-4-git-avanzado> ]633;B
+PS>Set-Content -Path mensaje.txt -Value "Mensaje modificado desde rama A." -Encoding utf8
+]633;D;0]633;A]633;P;Cwd=C:\x5cDEVZONE\x5croad-2-js-fs\x5cmonth-1-fundamentos-js\x5c01-git-github\x5cdia-4-git-avanzadoPS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-4-git-avanzado> ]633;B
+PS>git add mensaje.txt
+
+]633;D;0]633;A]633;P;Cwd=C:\x5cDEVZONE\x5croad-2-js-fs\x5cmonth-1-fundamentos-js\x5c01-git-github\x5cdia-4-git-avanzadoPS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-4-git-avanzado> ]633;B
+PS>git commit -m "feat(dia 4): Cambio desde rama A"
+
+]633;D;0]633;A]633;P;Cwd=C:\x5cDEVZONE\x5croad-2-js-fs\x5cmonth-1-fundamentos-js\x5c01-git-github\x5cdia-4-git-avanzadoPS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-4-git-avanzado> ]633;B
+PS>git checkout main
+
+]633;D;0]633;A]633;P;Cwd=C:\x5cDEVZONE\x5croad-2-js-fs\x5cmonth-1-fundamentos-js\x5c01-git-github\x5cdia-4-git-avanzadoPS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-4-git-avanzado> ]633;B
+PS>git checkout -b rama-B
+
+]633;D;0]633;A]633;P;Cwd=C:\x5cDEVZONE\x5croad-2-js-fs\x5cmonth-1-fundamentos-js\x5c01-git-github\x5cdia-4-git-avanzadoPS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-4-git-avanzado> ]633;B
+PS>Set-Content -Path mensaje.txt -Value "Mensaje diferente desde rama B" -Encoding utf8
+]633;D;0]633;A]633;P;Cwd=C:\x5cDEVZONE\x5croad-2-js-fs\x5cmonth-1-fundamentos-js\x5c01-git-github\x5cdia-4-git-avanzadoPS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-4-git-avanzado> ]633;B
+PS>git add mensaje.txt
+
+]633;D;0]633;A]633;P;Cwd=C:\x5cDEVZONE\x5croad-2-js-fs\x5cmonth-1-fundamentos-js\x5c01-git-github\x5cdia-4-git-avanzadoPS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-4-git-avanzado> ]633;B
+PS>git commit -m "feat(dia 4): Cambio desde rama B"
+
+]633;D;0]633;A]633;P;Cwd=C:\x5cDEVZONE\x5croad-2-js-fs\x5cmonth-1-fundamentos-js\x5c01-git-github\x5cdia-4-git-avanzadoPS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-4-git-avanzado> ]633;B
+PS>git checkout main
+
+]633;D;0]633;A]633;P;Cwd=C:\x5cDEVZONE\x5croad-2-js-fs\x5cmonth-1-fundamentos-js\x5c01-git-github\x5cdia-4-git-avanzadoPS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-4-git-avanzado> ]633;B
+PS>git merge rama-A
+
+]633;D;0]633;A]633;P;Cwd=C:\x5cDEVZONE\x5croad-2-js-fs\x5cmonth-1-fundamentos-js\x5c01-git-github\x5cdia-4-git-avanzadoPS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-4-git-avanzado> ]633;B
+PS>git merge rama-B
+
+]633;D;1]633;A]633;P;Cwd=C:\x5cDEVZONE\x5croad-2-js-fs\x5cmonth-1-fundamentos-js\x5c01-git-github\x5cdia-4-git-avanzadoPS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-4-git-avanzado> ]633;B
+PS>git add mensaje.txt
+
+]633;D;0]633;A]633;P;Cwd=C:\x5cDEVZONE\x5croad-2-js-fs\x5cmonth-1-fundamentos-js\x5c01-git-github\x5cdia-4-git-avanzadoPS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-4-git-avanzado> ]633;B
+PS>git commit -m "fix(dia 4): resolver conflicto manteniendo version A"
+
+]633;D;0]633;A]633;P;Cwd=C:\x5cDEVZONE\x5croad-2-js-fs\x5cmonth-1-fundamentos-js\x5c01-git-github\x5cdia-4-git-avanzadoPS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-4-git-avanzado> ]633;B
+]633;D]633;A]633;P;Cwd=C:\x5cDEVZONE\x5croad-2-js-fs\x5cmonth-1-fundamentos-js\x5c01-git-github\x5cdia-4-git-avanzadoPS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-4-git-avanzado> ]633;B
+PS>git reset --hard HEAD~1
+
+]633;D;0]633;A]633;P;Cwd=C:\x5cDEVZONE\x5croad-2-js-fs\x5cmonth-1-fundamentos-js\x5c01-git-github\x5cdia-4-git-avanzadoPS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-4-git-avanzado> ]633;B
+PS>git add mensaje.txt
+
+]633;D;0]633;A]633;P;Cwd=C:\x5cDEVZONE\x5croad-2-js-fs\x5cmonth-1-fundamentos-js\x5c01-git-github\x5cdia-4-git-avanzadoPS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-4-git-avanzado> ]633;B
+PS>git commit -m "fix(dia 4): resolver conflicto manteniendo version B"
+
+]633;D;0]633;A]633;P;Cwd=C:\x5cDEVZONE\x5croad-2-js-fs\x5cmonth-1-fundamentos-js\x5c01-git-github\x5cdia-4-git-avanzadoPS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-4-git-avanzado> ]633;B
+PS>git reset --hard HEAD~1
+
+]633;D;0]633;A]633;P;Cwd=C:\x5cDEVZONE\x5croad-2-js-fs\x5cmonth-1-fundamentos-js\x5c01-git-github\x5cdia-4-git-avanzadoPS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-4-git-avanzado> ]633;B
+PS>git add mensaje.txt
+
+]633;D;0]633;A]633;P;Cwd=C:\x5cDEVZONE\x5croad-2-js-fs\x5cmonth-1-fundamentos-js\x5c01-git-github\x5cdia-4-git-avanzadoPS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-4-git-avanzado> ]633;B
+PS>git commit -m "fix(dia 4): resolver conflicto combinando versiones"
+
+]633;D;0]633;A]633;P;Cwd=C:\x5cDEVZONE\x5croad-2-js-fs\x5cmonth-1-fundamentos-js\x5c01-git-github\x5cdia-4-git-avanzadoPS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-4-git-avanzado> ]633;B
+PS>Stop-Transcript
+**********************
+Fin de la transcripci?n de Windows PowerShell
+Hora de finalizaci?n: 20251106150435
+**********************
+
