@@ -1,1 +1,2 @@
 ﻿Mensaje modificado desde rama A.
+Mensaje diferente desde rama B
