@@ -1,0 +1,250 @@
+**********************
+PowerShell transcript start
+Start time: 20251106193143
+Username: ALDOUSHIDE\Aldous
+RunAs User: ALDOUSHIDE\Aldous
+Configuration Name: 
+Machine: ALDOUSHIDE (Microsoft Windows NT 10.0.22631.0)
+Host Application: C:\Program Files\PowerShell\7\pwsh.dll -noexit -command try { . "c:\Users\Aldous\AppData\Local\Programs\Microsoft VS Code\resources\app\out\vs\workbench\contrib\terminal\common\scripts\shellIntegration.ps1" } catch {}
+Process ID: 6404
+PSVersion: 7.5.4
+PSEdition: Core
+GitCommitId: 7.5.4
+OS: Microsoft Windows 10.0.22631
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Transcript started, output file is C:\DEVZONE\transcripciones\dia-5-ejercicio.txt
+C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow
+PS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow> 
+PS>mkdir proyecto-colaborativo
+
+    Directory:
+C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d----          06-11-2025    19:32                proyecto-colaborativo
+
+C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow
+PS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow> 
+PS>cd proyecto-colaborativo
+C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo
+PS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo> 
+PS>mkdir src test docs
+>> TerminatingError(mkdir): "A positional parameter cannot be found that accepts argument 'test'."
+mkdir: A positional parameter cannot be found that accepts argument 'test'.
+mkdir: A positional parameter cannot be found that accepts argument 'test'.
+C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo
+PS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo> 
+PS>mkdir src, test, docs
+
+    Directory: C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gi
+tflow\proyecto-colaborativo
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d----          06-11-2025    19:34                src
+d----          06-11-2025    19:34                test
+d----          06-11-2025    19:34                docs
+
+C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo
+PS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo> 
+PS>echo 'console.log("Proyecto colaborativo")' > src/app.js
+console.log("Proyecto colaborativo")"
+C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo
+PS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo> 
+PS>echo '# Mi Proyecto Colaborativo' > README.md
+# Mi Proyecto Colaborativo"
+C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo
+PS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo> 
+PS>echo '{"name": "proyecto-colaborativo", "version": "1.0.0"}' > package.json
+{"name": "proyecto-colaborativo", "version": "1.0.0"}"
+C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo
+PS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo> 
+PS>git add .
+
+C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo
+PS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo> 
+PS>git commit -m "feat: inicializar estructura del proyecto"
+orativo/package.json
+ create mode 100644 month-1-fundamentos-js/01-git-github/dia-5-gitflow/proyecto-colab
+orativo/src/app.js
+C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo
+PS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo> 
+PS>git checkout -b feature/calculator
+
+C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo
+PS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo> 
+PS>echo '// Calculadora básica
+function add(a,b) {
+  return a + b;
+}
+
+function multiply(a,b) {
+  return a * b;
+}
+
+module.exports = { add, multiply };
+' > src/calculator.js 
+// Calculadora básica
+function add(a,b) {
+  return a + b;
+}
+
+function multiply(a,b) {
+  return a * b;
+}
+
+module.exports = { add, multiply };
+"
+C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo
+PS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo> 
+PS>echo '
+const { add, multiply } = require("../src/calculator");
+
+test("add function works correctly", () => {
+    expect(add(2, 3)).toBe(5);
+    expect(add(-1, 1)).toBe(0);
+});
+
+test("multiply function works correctly", () => {
+    expect(multiply(2, 3)).toBe(6);
+    expect(multiply(0, 5)).toBe(0);
+});
+' > test/calculator.test.js
+
+const { add, multiply } = require("../src/calculator");
+
+test("add function works correctly", () => {
+    expect(add(2, 3)).toBe(5);
+    expect(add(-1, 1)).toBe(0);
+});
+
+test("multiply function works correctly", () => {
+    expect(multiply(2, 3)).toBe(6);
+    expect(multiply(0, 5)).toBe(0);
+});
+"
+C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo
+PS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo> 
+PS>git add src/calculator.js
+
+C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo
+PS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo> 
+PS>git commit -m "feat: implement basic calculator functions"
+
+C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo
+PS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo> 
+PS>git add test/calculator.test.js
+
+C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo
+PS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo> 
+PS>git commit -m "test: add unit tests for calculator"
+
+C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo
+PS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo> 
+PS>git push origin feature/calculator
+
+C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo
+PS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo> 
+PS>echo '
+// Calculadora mejorada
+function add(a, b) {
+  if(typeof a != "number" || typeof b != "number"){
+   throw new Error("Both arguments must be numbers");
+  } 
+  return a + b;
+}
+
+function multiply(a, b) {
+   if(typeof a != "number" || typeof b != "number"){
+     throw new Error("Both arguments must be numbers");
+   } 
+   return a * b;
+}
+
+function divide(a, b) { 
+   if(b === 0){ 
+      throw new Error("Cannot divide by zero");   
+    }
+    return a / b;
+ }
+
+module.exports = { add, multiply, divide };
+' > src/calculator.js
+
+// Calculadora mejorada
+function add(a, b) {
+  if(typeof a != "number" || typeof b != "number"){
+   throw new Error("Both arguments must be numbers");
+  } 
+  return a + b;
+}
+
+function multiply(a, b) {
+   if(typeof a != "number" || typeof b != "number"){
+     throw new Error("Both arguments must be numbers");
+   } 
+   return a * b;
+}
+
+function divide(a, b) { 
+   if(b === 0){ 
+      throw new Error("Cannot divide by zero");   
+    }
+    return a / b;
+ }
+
+module.exports = { add, multiply, divide };
+"
+C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo
+PS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo> 
+PS>git add src/calculator.js
+
+C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo
+PS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo> 
+PS>git commit -m "feat: add input validation and divide function"
+
+C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo
+PS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo> 
+PS>git checkout main
+
+C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo
+PS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo> 
+PS>git pull origin main
+
+C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo
+PS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo> 
+PS>git merge feature/calculator
+
+C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo
+PS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo> 
+PS>git branch -d feature/calculator
+
+C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo
+PS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo> 
+PS>git push origin --delete feature/calculator
+
+C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo
+PS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo> 
+PS>git tag -a v1.0.0 -m "Release v1.0.0: Basic calculator functionality"
+
+C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo
+PS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo> 
+PS>git push origin v1.0.0
+
+C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo
+PS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo> 
+PS>git log --oneline --graph
+
+C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo
+PS C:\DEVZONE\road-2-js-fs\month-1-fundamentos-js\01-git-github\dia-5-gitflow\proyecto-colaborativo> 
+PS>Stop-Transcript
+**********************
+PowerShell transcript end
+End time: 20251106200423
+**********************
