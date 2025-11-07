@@ -1,0 +1,77 @@
+------------------------------------------------------------------------
+
+PowerShell transcript start Start time: 20251106212705 User: ALDOUSHIDE
+Machine: ALDOUSHIDE PSVersion: 7.5.4 **********************
+
+Inicio de ejercicio Día 5 - Timestamp: 20251106-212353
+
+PS> git –version git version 2.51.2.windows.1
+
+Configuración Git global
+
+PS> git config –global core.editor “code –wait” PS> git config –global
+init.defaultBranch main PS> git config –global pull.rebase false PS> git
+config –global alias.co checkout PS> git config –global alias.br branch
+PS> git config –global alias.ci commit PS> git config –global alias.st
+status PS> git config –global –list
+
+Instalación de extensiones VSCode
+
+PS> code –install-extension eamodio.gitlens PS> code –install-extension
+mhutchie.git-graph PS> code –install-extension
+vivaxy.vscode-conventional-commits
+
+Crear estructura del ejercicio
+
+PS> mkdir ejercicio-dia-5 PS> cd ejercicio-dia-5 PS> mkdir src, test,
+docs
+
+Crear implementación
+
+export function saludar(nombre){ return Hola, ${nombre}; }
+
+Crear test
+
+import { saludar } from “../src/saludar.js”; test(“Saludar devuelve el
+saludo correcto”, () => { expect(saludar(“Aldo”)).toBe(“Hola, Aldo”);
+});
+
+Crear rama feature
+
+PS> git co -b feature/saludo
+
+Agregar cambios
+
+PS> git add .
+
+Commit con Conventional Commits
+
+PS> git ci -m “feat(saludar): implementa función de saludo y test
+básico”
+
+Subir rama al remoto
+
+PS> git push -u origin feature/saludo
+
+Autenticación GitHub CLI (SSH)
+
+PS> gh auth login
+
+Crear Pull Request
+
+PS> gh pr create –fill
+
+Ver PR
+
+PS> gh pr view
+
+Merge del PR + eliminar rama local/remota
+
+PS> gh pr merge –merge –delete-branch
+
+Volver a main
+
+PS> git co main PS> git pull origin main
+
+PS> Stop-Transcript ********************** PowerShell transcript end End
+time: 20251107014417 **********************
