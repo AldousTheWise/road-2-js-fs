@@ -10,4 +10,9 @@
 | 2025-11-04 | Setup             | Subida a GitHub             |   OK   | Creación del repo en GH |
 | 2025-11-05 | Intro y GitHub    | Dia 3. GitHub y SSH         |   Ok   |                         |
 | 2025-11-06 | Intro y GitHub    | Dia 4. Git Avanzado         |   OK   |                         |
+| 2025-11-07 | Intro y Github    | Dia 5. Gitflow              |   OK   |                         |
+| 2025-11-10 | Fundamentos JS    | Día 1. Tipos de datos       |   OK   |                         |
+| 2025-10-11 | Fundamentos JS    | Día 2. Estructuras de       |   OK   |                         |
+|            |                   | control                     |        |                         |
+| 2025-10-12 | Fundamentos JS    | Día 3. Funciones y Scope    |   OK   |                         |
 ```
