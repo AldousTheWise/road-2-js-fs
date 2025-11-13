@@ -24,13 +24,18 @@ Incluye ejercicios, proyectos, notas, prácticas y reflexiones desde cero hasta 
 /road-2-js-fs
 |_/month-1-fundamentos-js/
 | |_/01-git-github
-|   |_/dia-1-Git-101
-|   |_/dia-2-Git-102
-|   | |_/01-practica-git-basico
-|   | |_/02-ejercicio-dia-2
-|   |_/dia-3-Github-ssh
-|   |_/dia-4-git-avanzado
+| | |_/dia-1-Git-101
+| | |_/dia-2-Git-102
+| | |_/dia-3-Github-ssh
+| | |_/dia-4-git-avanzado
+| | |_/dia-5-gitflow
+| |
 | |_/02-js-fundamentos
+| | |_/dia-1-tipos-de-datos
+| | |_/dia-2-estructuras-de-control
+| | |_/dia-3-funciones-scope-js
+| |
+| |
 | |_/03-web-dev-101
 | |_/04-advanced-js
 |
