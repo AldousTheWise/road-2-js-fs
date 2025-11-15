@@ -34,7 +34,8 @@ Incluye ejercicios, proyectos, notas, prácticas y reflexiones desde cero hasta 
 | | |_/dia-1-tipos-de-datos
 | | |_/dia-2-estructuras-de-control
 | | |_/dia-3-funciones-scope-js
-| |
+| | |_/dia-4-objetos-arrays-js
+| | |_/dia-5-programacion-asincrona
 | |
 | |_/03-web-dev-101
 | |_/04-advanced-js

@@ -15,4 +15,6 @@
 | 2025-10-11 | Fundamentos JS    | Día 2. Estructuras de       |   OK   |                         |
 |            |                   | control                     |        |                         |
 | 2025-10-12 | Fundamentos JS    | Día 3. Funciones y Scope    |   OK   |                         |
+| 2025-10-13 | Fundamentos JS    | Día 4. Objetos y Arrays     |   OK   | Sist. de gestión biblio |
+| 2025-10-14 | Fundamentos JS    | Día 5. Progr. Asíncrona     |   OK   | Sist de sincro de RPG   |
 ```
