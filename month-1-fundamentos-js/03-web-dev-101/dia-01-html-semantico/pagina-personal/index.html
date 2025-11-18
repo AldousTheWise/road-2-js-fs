@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO básico -->
+    <meta name="description" content="Portafolio de AldousTheWise, WebDev">
+    <meta name="keywords"
+        content="desarrollador web, portafolio, javascript, proyectos, contacto, vue.js, seguridad en redes, análisis de datos">
+    <meta name="author" content="Aldo Yáñez">
+
+    <!-- SEO para RRSS (OG) -->
+    <meta property="og:title" content="Portafolio de Aldo">
+    <meta property="og:description" content="Conoce mis proyectos en diferentes áreas.">
+    <meta property="og:type" content:="website">
+    <meta property="og:image" content="./assets/pixelated.webp">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>AldousTheWise WebDev</title>
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#sobre-mi">Sobre Mi</a></li>
+            <li><a href="#proyectos">Proyectos</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <section id="saludo">
+            <img src="./assets/pixelated.webp" alt="Imagen de Aldo">
+            <div class="texto">
+                <h1>Soy Aldo</h1>
+                <p>Un personaje multifuncional.</p>
+            </div>
+        </section>
+    </header>
+
+    <main>
+        <section id="inicio" class="hero">
+            <h2>Hola:</h2>
+            <p>¿Tienes alguna <strong>idea</strong> en la cabeza y no sabes como implementarla?</p>
+            <p>¿Quieres un sitio web que <strong>atraiga </strong> a tus clientes?</p>
+            <p>¿Necesitas algun consejo para el <strong>branding</strong> de tu negocio?</p>
+
+            <a href="#contacto"><button>Hablemos</button></a>
+        </section>
+
+        <section id="sobre-mi">
+            <article>
+                <div class="texto">
+                    <p>
+                        Soy un comodín en la baraja y poseo múltiples skills con las que puedo construir escenarios que
+                        lleven tu marca personal o darte la orientación precisa para tomar las decisiones que lleven tu
+                        negocio a un nuevo nivel.
+                    </p>
+
+                    <h2>Habilidades:</h2>
+                    <ul>
+                        <li>HTML, CSS, JS ES6+, JAVA</li>
+                        <li>Vue.js, Spring, Springboot </li>
+                        <li>SQL, Python para DS</li>
+                        <li>Git, GitHub</li>
+                    </ul>
+                </div>
+                <img src="./assets/magician.webp" alt="Carta de Tarot">
+            </article>
+        </section>
+
+        <section id="proyectos">
+            <h2>Proyectos</h2>
+
+            <div class="proyectos">
+                <article class="proyecto">
+                    <img src="./assets/sumochile.jpg" alt="Vista de landing page">
+                    <div class="texto">
+                        <h3>SumoChile, Landing Page</h3>
+                        <p>Página de la Federación Chilena de Sumo.<br>
+                            Implementada con base de datos para blog y manejo de usuarios (En desarrollo)
+                        </p>
+                        <p><strong>Tecnologías usadas: </strong>Vue.js, Pinia, Tailwindcss, Java y PostgreSQL</p>
+                        <p><strong>Repositorio: </strong><a
+                                href="https://github.com/AldousTheWise/sumochile">github/sumochile</a></p>
+                    </div>
+                </article>
+
+                <article class="proyecto">
+                    <img src="./assets/topologia-en-gh.jpg" alt="topologia de implementacion de seguridad en redes">
+                    <div class="texto">
+                        <h3>Seguridad en Redes</h3>
+                        <p>Implementación de Servidor RADIUS y Segmentación en Redes Cisco
+                            Configuración de VLANs, ACLs, OSPF, AAA (RADIUS), NAT y Syslog.</p>
+                        <p><strong>Tecnologías usadas: </strong> Packet Tracer, ACL, OSPF, AAA</p>
+                        <p><strong>Repositorio: </strong><a
+                                href="https://github.com/AldousTheWise/m5d2-implementacion-radius-pt">github/implementacion-pt-radius</a>
+                        </p>
+                    </div>
+                </article>
+
+                <article class="proyecto">
+                    <img src="./assets/repo-en-gh.jpg" alt="captura de repositorio en github">
+                    <div class="text">
+                        <h3>Road to Javascript FullStack</h3>
+                        <p>Bitácora y repo de práctica en JS ES6, DOM y proyectos de consola (En Progreso)</p>
+                        <p><strong>Tecnologías usadas: </strong>
+                            HTML, CSS, JS ES6, Git, GitHub</p>
+                        <p><strong>Repositorio: </strong><a
+                                href="https://github.com/AldousTheWise/road-2-js-fs">github/road-2-js-fs</a></p>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section id="contacto">
+            <h2>Contacto</h2>
+
+            <form id="form-contacto" novalidate>
+                <fieldset>
+                    <legend>Envíame un Mensaje</legend>
+
+                    <label for="nombre">Nombre completo:</label>
+                    <input type="text" id="nombre" name="nombre" required minlength="2" placeholder="Tu nombre">
+                    <small class="error" id="error-nombre"></small>
+                    <br>
+
+                    <label for="email">Correo electrónico:</label>
+                    <input type="email" id="email" name="email" required placeholder="nombre@correo.com">
+                    <small class="error" id="error-email"></small>
+                    <br>
+
+                    <label for="telefono">Teléfono:</label>
+                    <input type="tel" id="telefono" name="telefono" pattern="^[0-9+\-\s]{6,15}$"
+                        placeholder="+56 9 1234 5678">
+                    <small class="error" id="error-telefono"></small>
+                    <br>
+
+                    <label for="asunto">Asunto:</label>
+                    <select id="asunto" name="asunto" required>
+                        <option value="">Seleccionar...</option>
+                        <option value="proyecto">Consulta sobre proyecto</option>
+                        <option value="colaboracion">Propuesta de colaboración</option>
+                        <option value="empleo">Oportunidad laboral</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                    <small class="error" id="error-asunto"></small>
+                    <br>
+
+                    <label for="mensaje">Mensaje:</label>
+                    <textarea id="mensaje" name="mensaje" rows="5" cols="40" required minlength="10"
+                        placeholder="Cuéntame en qué te puedo ayudar..."></textarea>
+                    <small class="error" id="error-mensaje"></small>
+                    <br>
+
+                </fieldset>
+
+                <button type="submit">Enviar Mensaje</button>
+                <p id="mensaje-exito" class="exito"></p>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 ElSantisimoWD. Todos los derechos reservados</p>
+        <p>
+            <a href="https://github.com/AldousTheWise">GitHub</a>
+            <a href="https://www.linkedin/in/aldoryanez">Linkedin</a>
+        </p>
+    </footer>
+    <script src="./js/script.js"></script>
+</body>
+
+</html>

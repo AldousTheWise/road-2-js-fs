@@ -1,0 +1,263 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: monospace;
+}
+
+nav {
+  background-color: darkslategrey;
+  padding: 1rem;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  text-shadow: 5px 4px 2px rgba(0, 0, 0, 1);
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+}
+
+header {
+  background-color: black;
+  color: white;
+}
+
+#saludo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100dvh;
+  padding: 0.8rem;
+}
+
+#saludo img {
+  width: 19rem;
+  height: 45%;
+}
+
+#saludo .texto {
+  font-size: 1.5rem;
+}
+
+.hero {
+  height: 100dvh;
+  font-size: 2rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.hero button {
+  background-color: grey;
+  border-radius: 0.5rem;
+  font-family: monospace;
+  font-size: 2rem;
+  font-weight: bold;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.hero button:active {
+  background-color: lightgrey;
+  transform: scale(0.97);
+}
+
+#sobre-mi {
+  background-color: black;
+  color: white;
+  min-height: 100vh;
+  padding: 4rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+#sobre-mi article {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  max-width: 1200px;
+}
+
+#sobre-mi .texto {
+  flex: 1;
+  max-width: 550px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: left;
+}
+
+#sobre-mi ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+}
+
+#sobre-mi ul li {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+#sobre-mi img {
+  flex: 1;
+  max-height: 110vh;
+  width: auto;
+  object-fit: cover;
+  transform: rotate(4deg);
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease;
+}
+
+#sobre-mi img:hover {
+  transform: rotate(-2deg) scale(1.02);
+}
+
+#proyectos {
+  min-height: 100dvh;
+  text-align: center;
+}
+
+#proyectos h2 {
+  padding-top: 20px;
+  font-size: 5rem;
+}
+
+.proyectos {
+  display: grid;
+  font-size: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 40px;
+}
+
+.proyecto {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.proyecto img {
+  width: 300px;
+  height: 150px;
+}
+
+#contacto {
+  background-color: black;
+  color: white;
+  max-width: 100dvw;
+  margin: 0 auto;
+  padding: 1rem;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+#contacto h2 {
+  font-size: 5rem;
+}
+
+form {
+  max-width: 600px;
+  display: grid;
+  gap: 1rem;
+  text-align: start;
+}
+
+fieldset {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+label {
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: normal;
+}
+
+button {
+  background: grey;
+  color: #fff;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+button:hover {
+  background: lightgrey;
+}
+
+.error {
+  color: #d9534f;
+  font-size: 0.9rem;
+}
+
+.exito {
+  color: green;
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+footer {
+  height: 50px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  padding: 20px 0;
+}
+
+@media (max-width: 900px) {
+  #sobre-mi article {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  #sobre-mi img {
+    max-width: 90%;
+    height: auto;
+    transform: rotate(-3deg);
+    margin-bottom: 1rem;
+  }
+
+  #sobre-mi .texto {
+    text-align: center;
+  }
+}
