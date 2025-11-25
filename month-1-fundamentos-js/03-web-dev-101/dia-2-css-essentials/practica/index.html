@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Layout Responsivo con Flexbox</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo">MiEmpresa</div>
+            <ul class="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#servicios">Servicios</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+            <div class="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <section id="inicio" class="hero">
+            <h1>Bienvenido a Nuestra Empresa</h1>
+            <p>Soluciones innovadoras para tu negocio digital</p>
+            <button class="cta-button">Comenzar Ahora</button>
+        </section>
+
+        <section id="servicios" class="services">
+            <div class="service-card">
+                <div class="service-icon">🚀</div>
+                <h3>Desarrollo Web</h3>
+                <p>Creamos aplicaciones web modernas y escalables con las últimas tecnologías,</p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">📱</div>
+                <h3>Apps Móviles</h3>
+                <p>Desarrollamos aplicaciones nativas e híbridas para IOS y Android.</p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">☁️</div>
+                <h3>Cloud Solutions</h3>
+                <p>Implementamos soluciones en la nube para máxima escalabilidad y rendimiento.</p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">🔒</div>
+                <h3>Seguridad</h3>
+                <p>Protegemos tus datos y aplicaciones con las mejores prácticas de seguridad.</p>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Empresa</h4>
+                <ul>
+                    <li><a href="#">Sobre Nosotros</a></li>
+                    <li><a href="#">Carreras</a></li>
+                    <li><a href="#">Prensa</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Servicios</h4>
+                <ul>
+                    <li><a href="#">Desarrollo Web</a></li>
+                    <li><a href="#">Consultoría</a></li>
+                    <li><a href="#">Soporte</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contacto</h4>
+                <ul>
+                    <li><a href="mailto:info@miempresa.com">info@miempresa.com</a></li>
+                    <li><a href="tel:+1234567890">+1 (234) 567-890</a></li>
+                    <li><a href="#">Ubicación</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <p>&copy; 2024 MiEmpresa. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
