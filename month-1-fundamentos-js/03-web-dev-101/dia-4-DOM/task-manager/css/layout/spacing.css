@@ -1,0 +1,35 @@
+/* ==================================
+    Márgenes y paddings globales 
+   ================================== */
+
+/* Espacio vertical */
+.mt-sm {
+  margin-top: var(--space-sm);
+}
+.mt {
+  margin-top: var(--space);
+}
+.mt-lg {
+  margin-top: var(--space-lg);
+}
+
+.mb-sm {
+  margin-bottom: var(--space-sm);
+}
+.mb {
+  margin-bottom: var(--space);
+}
+.mb-lg {
+  margin-bottom: var(--space-lg);
+}
+
+/* Espaciado interno */
+.p-sm {
+  padding: var(--space-sm);
+}
+.p {
+  padding: var(--space);
+}
+.p-lg {
+  padding: var(--space-lg);
+}

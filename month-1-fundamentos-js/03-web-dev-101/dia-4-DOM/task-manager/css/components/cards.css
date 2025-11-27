@@ -1,0 +1,11 @@
+/* ==================================
+    Tarjetas 
+   ================================== */
+
+/* Bloque tipo tarjeta */
+.card {
+  background: var(--color-card);
+  padding: var(--space);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}

@@ -1,0 +1,13 @@
+/* ============================
+   Tema claro (por defecto)
+   ============================ */
+
+body.light {
+  --color-bg: #f6f6f6;
+  --color-card: #ffffff;
+  --color-text: #222;
+  --color-primary: #3a77f2;
+  --color-primary-hover: #2f63c7;
+  --color-danger: #e74c3c;
+  --color-border: #d8d8d8;
+}

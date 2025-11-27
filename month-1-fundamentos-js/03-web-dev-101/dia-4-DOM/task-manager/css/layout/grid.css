@@ -1,0 +1,25 @@
+/* =================================
+    Sistema en grid 
+   ================================= */
+
+/* Filas flexibles */
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+/* Columnas */
+.col {
+  flex: 1;
+}
+
+/* Grid simple para layouts específicos */
+.grid {
+  display: grid;
+  gap: vap(--space-sm);
+}
+
+.justify-between {
+  justify-content: space-between;
+}

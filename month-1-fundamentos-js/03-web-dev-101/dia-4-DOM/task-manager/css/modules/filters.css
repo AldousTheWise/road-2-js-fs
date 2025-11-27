@@ -1,0 +1,31 @@
+/* ===================================
+    Filtros y buscador
+   =================================== */
+
+#filters .card {
+  display: grid;
+  gap: var(--space);
+}
+
+/* Filtros de estado */
+.filters-row {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+/* Botón activo */
+.btn-filter-active {
+  background: var(--color-primary);
+  color: white;
+}
+
+/* Búsqueda */
+#search {
+  width: 100%;
+}
+
+/* Select de categorías */
+#category-filter {
+  width: 100%;
+}
