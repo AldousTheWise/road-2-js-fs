@@ -1,0 +1,46 @@
+/* =====================================
+    
+    ANIMACIONES GENERALES DEL SISTEMA
+   ===================================== */
+
+/* Animación suave de modal */
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade In simple para tarjetas o contenido */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Animación para barras de progreso */
+@keyframes growBar {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--target-height);
+  }
+}
+
+/* Animación leve de hover */
+@keyframes subtleFloat {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-3px);
+  }
+}

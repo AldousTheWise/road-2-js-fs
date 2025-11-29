@@ -1,0 +1,39 @@
+/* =====================================
+    
+    POMODORO
+   ===================================== */
+
+.pomodoro {
+  background: var(--color-bg-alt);
+  padding: var(--space-lg);
+  border-radius: var(--radius-lg);
+  box-shadow: (--shadow-sm);
+  text-align: center;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.pomodoro__circle {
+  width: 180px;
+  height: 180px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-dark);
+  font-size: 2.5rem;
+  margin-bottom: var(--space-lg);
+  animation: fadeIn 0.3s ease-out;
+}
+
+.pomodoro__mode {
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+}
+
+.pomodoro__mode--active {
+  background: var(--color-primary);
+  color: var(--color-text-dark);
+}
