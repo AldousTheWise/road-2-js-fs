@@ -1,5 +1,5 @@
 /* =====================================
-    
+    cards.css
     TARJETAS
    ===================================== */
 
@@ -7,7 +7,7 @@
   background: var(--color-bg-alt);
   padding: var(--space-lg);
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-xl);
   transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 
@@ -18,7 +18,7 @@
 
 .card__title {
   font-size: 1rem;
-  color: var(--color-text-muted);
+  color: var(--color-text);
   margin-bottom: var(--space-sm);
 }
 

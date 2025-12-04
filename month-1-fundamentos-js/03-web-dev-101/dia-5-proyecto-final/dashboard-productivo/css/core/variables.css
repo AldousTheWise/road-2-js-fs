@@ -1,18 +1,20 @@
 /* =====================================
-    
+    variables.css
     VARIABLES GLOBALES
    ===================================== */
 
 :root {
   /* Colores principales */
   --color-bg: #8bbcec;
-  --color-bg-alt: #f3bcbc;
+  --color-bg-alt: #3c5bb1;
+  --color-surface: #ffffff;
   --color-text: #0f172a;
-  --color-text-muted: #475569;
+  --color-text-muted: #202731;
 
   /* Modo oscuro */
   --color-bg-dark: #0f172a;
   --color-bg-dark-alt: #1e293b;
+  --color-surface-dark: #1e293b;
   --color-text-dark: #e2e8f0;
   --color-text-dark-muted: #94a3b8;
 

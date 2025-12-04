@@ -9,5 +9,6 @@ export function formatDate(dateString) {
   return date.toLocaleDateString("es-ES", {
     day: "numeric",
     month: "short",
+    year: "numeric",
   });
 }

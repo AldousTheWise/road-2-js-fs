@@ -1,0 +1,39 @@
+.toast {
+  min-width: 220px;
+  max-width: 320px;
+  padding: var(--space-md);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg, #fff);
+  color: var(--color-text, #222);
+  box-shadow: var(--shadow-lg); /* Más sombra para mejor visibilidad */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  opacity: 0;
+  transform: translateY(20px) scale(0.95); /* Efecto más dramático */
+  transition: opacity 0.3s ease, transform 0.3s ease; /* Transición más suave */
+}
+
+.toast--visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Mejorar botón de cerrar */
+.toast__close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  opacity: 0.7;
+  transition: opacity 0.2s, transform 0.2s;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.toast__close:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.1);
+  transform: scale(1.1);
+}

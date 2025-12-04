@@ -10,6 +10,16 @@ export class ThemeService {
     this.isDark = storage.get("isDark", false);
   }
 
-  apply() {}
-  toggle() {}
+  apply() {
+    document.documentElement.setAttribute(
+      "data-theme",
+      this.isDark ? "dark" : "light"
+    );
+  }
+
+  toggle() {
+    this.isDark = !this.isDark;
+    this.storage.set("isDark", this.isDark);
+    this.apply();
+  }
 }

@@ -1,9 +1,10 @@
 /* =====================================
-    
+    layout.css
     LAYOUT GENERAL DEL DASHBOARD
    ===================================== */
 
-.header-principal {
+/* Header */
+#header-principal {
   background: var(--color-bg-alt);
   padding: var(--space-lg) var(--space-xl);
   box-shadow: var(--shadow-sm);
@@ -12,46 +13,57 @@
   z-index: 10;
 }
 
-.contenedor-header {
+.header__container {
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 2rem;
 
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
 }
 
-.contenido-principal {
+.header__title {
+  margin: 0;
+  text-align: center;
+  flex-grow: 1;
+  font-size: 1.5rem;
+}
+
+/* Stats */
+.stats {
   max-width: 1200px;
   margin: var(--space-xl) auto;
   padding: 0 var(--space-lg);
 }
 
-/* Grid principal (Panel tareas + Pomodoro) */
-.grid-principal {
+.stats__grid {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: var(--space-xl);
   margin-top: var(--space-xl);
 }
 
+/* Grid principal (Tareas + Pomodoro) */
+.layout__main {
+  max-width: 1200px;
+  margin: var(--space-xl) auto;
+  padding: 0 var(--space-lg);
+
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: var(--space-xl);
+}
+
 @media (max-width: 900px) {
-  .grid-principal {
+  .layout__main {
     grid-template-columns: 1fr;
   }
 }
 
-/* Sección de estadísticas */
-.grid-estadísticas {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: var(--space-lg);
-  margin-top: var(--space-md);
-}
-
-.tarjeta-estadística {
-  background: var(--color-bg-alt);
-  padding: var(--space-lg);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
+/* Weekly section */
+.weekly {
+  max-width: 1200px;
+  margin: var(--space-xl) 6rem;
+  padding-bottom: var(--space-lg);
 }

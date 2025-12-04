@@ -1,5 +1,5 @@
 /* =====================================
-    
+    dark.css
     MODO OSCURO
    ===================================== */
 
@@ -11,6 +11,7 @@ body.theme-dark {
 /* Elementos principales */
 body.theme-dark .header-principal,
 body.theme-dark .card,
+body.theme-dark .card__title,
 body.theme-dark .task-item,
 body.theme-dark .pomodoro,
 body.theme-dark dialog,

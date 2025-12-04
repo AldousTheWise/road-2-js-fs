@@ -1,5 +1,5 @@
 /* =====================================
-    
+    buttons.css
     BOTONES
    ===================================== */
 
@@ -21,7 +21,7 @@
 /* Primario */
 .btn--primary {
   background: var(--color-primary);
-  color: var(--color-text);
+  color: white;
   box-shadow: var(--shadow-sm);
 }
 
@@ -34,7 +34,10 @@
 .btn--secondary {
   background: var(--color-bg-alt);
   border: 1px solid #e2e8f0;
+  border-radius: var(--radius-sm);
   color: var(--color-text);
+  padding: var(--space-sm);
+  margin: var(--space-sm) var(--space-sm);
 }
 
 .btn--secondary:hover {
@@ -45,11 +48,21 @@
 /* Botón de ícono */
 .btn--icon {
   padding: var(--space-sm);
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-text);
   border-radius: var(--radius-sm);
   font-size: 1.2rem;
-  background: var(--color-bg-alt);
 }
 
 .btn--icon:hover {
-  background: #e2e8f0;
+  background: var(--color-bg);
+}
+
+/* Botón de formulario */
+.btn--edit {
+  border: 2px solid var(--color-warning);
+}
+
+.btn--delete {
+  border: 2px solid var(--color-danger);
 }

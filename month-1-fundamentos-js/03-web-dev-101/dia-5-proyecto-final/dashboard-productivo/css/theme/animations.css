@@ -1,5 +1,5 @@
 /* =====================================
-    
+    animations.css
     ANIMACIONES GENERALES DEL SISTEMA
    ===================================== */
 
@@ -26,12 +26,16 @@
 }
 
 /* Animación para barras de progreso */
-@keyframes growBar {
+@keyframes barGrow {
   from {
     height: 0;
+    opacity: 0;
+    transform: translateY(10px);
   }
   to {
-    height: var(--target-height);
+    height: var(--current-height);
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
