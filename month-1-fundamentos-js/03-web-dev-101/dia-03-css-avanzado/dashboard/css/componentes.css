@@ -1,0 +1,57 @@
+/*==================================
+  componentes.css
+  tarjetas, botones, tablas, KPIs
+===================================*/
+
+/* BOTONES */
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn--primary {
+  background: var(--color-primary);
+  color: var(--color-text);
+}
+
+/* TARJETAS GENERALES */
+.card {
+  background: var(--color-bg-alt);
+  padding: 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.card-body {
+  margin-top: 0.5rem;
+}
+
+/* Grid de KPIs */
+.kpi-grid {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+/* Valor grande del KPI */
+.kpi-value {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+/* Desktop: 2 columnas */
+@media (min-width: 900px) {
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
