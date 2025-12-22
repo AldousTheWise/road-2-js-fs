@@ -1,0 +1,54 @@
+/* =====================================
+    pomodoro.css
+    POMODORO
+   ===================================== */
+
+.pomodoro {
+  background: var(--color-bg-alt);
+  padding: var(--space-lg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+  animation: fadeIn 0.3s ease-out;
+
+  /* Asegurar que no se salga de su contenedor */
+  position: relative; /* Cambiar si es absolute/fixed */
+  z-index: 1; /* Menor que el botón */
+  overflow: hidden; /* Contener contenido */
+}
+
+.pomodoro-container {
+  position: relative;
+  z-index: 1;
+}
+
+.pomodoro__mode-label {
+  font-weight: bolder;
+}
+
+/* Asegurar que el contenido del pomodoro no se salga */
+.pomodoro__circle {
+  width: 180px;
+  height: 180px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-dark);
+  font-size: 2.5rem;
+  margin-bottom: var(--space-lg);
+  animation: fadeIn 0.3s ease-out;
+
+  /* Asegurar que no se salga */
+  position: relative;
+  overflow: hidden;
+}
+
+/* El span del tiempo NO debe salirse */
+#pomodoro-time {
+  position: relative;
+  z-index: 1;
+  display: block;
+}

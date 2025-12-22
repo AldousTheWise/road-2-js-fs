@@ -1,0 +1,68 @@
+/* =====================================
+    buttons.css
+    BOTONES
+   ===================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  transition: background 0.2s, transform 0.1s;
+  user-select: none;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+/* Primario */
+.btn--primary {
+  background: var(--color-primary);
+  color: white;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn--primary:hover {
+  background: var(--color-primary-dark);
+  animation: subtleFloat 0.15s ease forwards;
+}
+
+/* Secundario */
+.btn--secondary {
+  background: var(--color-bg-alt);
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  padding: var(--space-sm);
+  margin: var(--space-sm) var(--space-sm);
+}
+
+.btn--secondary:hover {
+  background: #e2e8f0;
+  animation: subtleFloat 0.15s ease forwards;
+}
+
+/* Botón de ícono */
+.btn--icon {
+  padding: var(--space-sm);
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-text);
+  border-radius: var(--radius-sm);
+  font-size: 1.2rem;
+}
+
+.btn--icon:hover {
+  background: var(--color-bg);
+}
+
+/* Botón de formulario */
+.btn--edit {
+  border: 2px solid var(--color-warning);
+}
+
+.btn--delete {
+  border: 2px solid var(--color-danger);
+}
