@@ -1,0 +1,19 @@
+@import url("./base/reset.css");
+@import url("./base/variables.css");
+@import url("./base/typography.css");
+
+@import url("./layout/containers.css");
+@import url("./layout/containers.css");
+@import url("./layout/spacing.css");
+
+@import url("./components/buttons.css");
+@import url("./components/cards.css");
+@import url("./components/inputs.css");
+@import url("./components/badges.css");
+
+@import url("./modules/forms.css");
+@import url("./modules/tasks.css");
+@import url("./modules/filters.css");
+
+@import url("./theme/light.css");
+@import url("./theme/dark.css");

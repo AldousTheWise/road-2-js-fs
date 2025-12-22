@@ -1,0 +1,22 @@
+/* =================================
+    Contenedores principales 
+   ================================= */
+
+.app {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: var(--space);
+}
+
+/* Secciones internas (task-form, filters, task-list) */
+section {
+  margin-bottom: var(--space-lg);
+}
+
+/* Tarjetas generales */
+.wrapper {
+  background: var(--color-card);
+  padding: var(--space);
+  border: var(--radius);
+  box-shadow: var(--shadow);
+}

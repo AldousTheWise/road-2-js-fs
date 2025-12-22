@@ -1,0 +1,25 @@
+/* =================================
+    Tipografía global 
+   ================================= */
+
+body {
+  font-family: var(--font-main);
+  font-size: 16px;
+  line-height: 1.5;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+h1 {
+  font-size: 1.6rem;
+  margin-bottom: var(--space-sm);
+}
+
+h2 {
+  font-size: 1.3rem;
+  margin-bottom: var(--space-sm);
+}
+
+p {
+  margin-bottom: var(--space-sm);
+}

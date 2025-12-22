@@ -1,0 +1,20 @@
+/* ==================================
+    Inputs 
+   ================================== */
+
+/* Inputs base */
+input[type="text"],
+select {
+  width: 100%;
+  padding: var(--space-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: white;
+  font-size: 1rem;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}

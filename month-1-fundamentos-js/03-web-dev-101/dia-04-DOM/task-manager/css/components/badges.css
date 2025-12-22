@@ -1,0 +1,18 @@
+/* ==================================
+   Etiquetas (Categorías) 
+   ================================== */
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: var(--radius);
+  background: var(--color-primary);
+  color: var(--color-text);
+}
+
+.badge-light {
+  background: #ddd;
+  color: #333;
+}

@@ -1,0 +1,13 @@
+/* ============================
+   Tema oscuro
+   ============================ */
+
+body.dark {
+  --color-bg: #121212;
+  --color-card: #1e1e1e;
+  --color-text: #e5e5e5;
+  --color-primary: #60a5fa;
+  --color-primary-hover: #3b82f6;
+  --color-danger: #ef4444;
+  --color-border: #333;
+}
