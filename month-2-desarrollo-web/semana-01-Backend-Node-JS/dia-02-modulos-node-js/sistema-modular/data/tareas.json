@@ -1,0 +1,40 @@
+{
+  "tareas": [
+    {
+      "id": "1767686383723",
+      "titulo": "Hacer ejercicio",
+      "descripcion": "30 minutos de cardio",
+      "prioridad": "baja",
+      "completada": true,
+      "fechaCreacion": "2026-01-06T08:00:53.068Z",
+      "fechaCompletada": "2026-01-06T07:59:43.731Z"
+    },
+    {
+      "id": "1767686383724",
+      "titulo": "Revisar código",
+      "descripcion": "Code review del proyecto",
+      "prioridad": "alta",
+      "completada": true,
+      "fechaCreacion": "2026-01-06T08:00:53.068Z",
+      "fechaCompletada": "2026-01-06T07:59:43.733Z"
+    },
+    {
+      "id": "1767686453070",
+      "titulo": "Hacer ejercicio",
+      "descripcion": "30 minutos de cardio",
+      "prioridad": "baja",
+      "completada": true,
+      "fechaCreacion": "2026-01-06T08:00:53.070Z",
+      "fechaCompletada": "2026-01-06T08:00:53.080Z"
+    },
+    {
+      "id": "1767686453071",
+      "titulo": "Revisar código",
+      "descripcion": "Code review del proyecto",
+      "prioridad": "alta",
+      "completada": true,
+      "fechaCreacion": "2026-01-06T08:00:53.071Z",
+      "fechaCompletada": "2026-01-06T08:00:53.083Z"
+    }
+  ]
+}

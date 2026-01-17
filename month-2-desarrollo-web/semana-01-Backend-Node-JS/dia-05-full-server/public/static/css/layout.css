@@ -1,0 +1,56 @@
+/* ESTRUCTURA GENERAL */
+main {
+  flex: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 20px;
+  box-sizing: border-box;
+}
+
+/* NAVEGACION */
+nav {
+  background: #2c3e50;
+  color: #fff;
+  padding: 1rem 0;
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav h1 {
+  font-size: 1.5rem;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: background 0.3s;
+}
+
+nav a:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* FOOTER */
+footer {
+  background: #34495e;
+  color: #fff;
+  text-align: center;
+  padding: 2rem;
+  margin-top: auto;
+}

@@ -1,0 +1,14 @@
+{
+  "name": "dia-05-full-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "Aldo Yañez <aldo.yanez01@gmail.com>",
+  "license": "ISC",
+  "type": "commonjs"
+}

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API de tareas - Node.js</title>
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+
+<body>
+    <h1>API de Gestión de Tareas</h1>
+    <p>Servidor HTTP creado con Node.js puro</p>
+
+    <button id="btn-cargar">Cargar tareas</button>
+    <ul id="lista-tareas"></ul>
+
+    <h2>Endpoints Disponibles:</h2>
+
+    <div class="endpoint">
+        <span class="method">GET</span> <code>/api/tareas</code>
+        <p>Listar todas las tareas. Parámetros opcionales:
+            <code>completada</code>, <code>prioridad</code>, <code>q</code>
+        </p>
+    </div>
+
+    <div class="endpoint">
+        <span class="method">GET</span> <code>/api/tareas/:id</code>
+        <p>Obtener tarea específica por ID.</p>
+    </div>
+
+    <div class="endpoint">
+        <span class="method">POST</span><code>/api/tareas</code>
+        <p>Crear nueva tarea:</p>
+        <pre>
+            {
+                "titulo": "Mi nueva tarea",
+                "descripcion": "Descripcion opcional",
+                "prioridad": " alta | media | baja "
+            }
+        </pre>
+    </div>
+    <div class="endpoint">
+        <span class="method">PUT</span> <code>/api/tareas/:id</code>
+        <p>Actualizar tarea existente.</p>
+    </div>
+    <div class="endpoint">
+        <span class="method">DELETE</span> <code>/api/tareas/:id</code>
+        <p>Eliminar tarea</p>
+    </div>
+
+    <h2>Ejemplos de Uso.</h2>
+    <h3>Listar tareas:</h3>
+    <pre>curl http://localhost:3000/api/tareas</pre>
+
+    <h3>Crear tarea:</h3>
+    <pre>
+        curl -X POST -H "Content-Type: application/json"\
+        -d '{"titulo" : "Aprender HTTP", "descripcion":"Estudiar protocolos web"}' \
+        http://localhost:3000/api/tareas
+    </pre>
+
+    <h3>Buscar tareas:</h3>
+    <pre>curl "http://localhost:3000/api/tareas?q=aprender"</pre>
+
+    <h3>Filtrar por estado:</h3>
+    <pre>curl "http://localhost:3000/api/tareas?completada=false"</pre>
+
+    <script src="./js/app.js"></script>
+</body>
+
+</html>

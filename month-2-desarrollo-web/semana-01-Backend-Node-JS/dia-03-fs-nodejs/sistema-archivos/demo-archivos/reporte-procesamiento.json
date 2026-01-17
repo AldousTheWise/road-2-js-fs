@@ -1,0 +1,36 @@
+{
+  "fechaGeneracion": "2026-01-07T07:47:13.373Z",
+  "totalArchivos": 4,
+  "estadisticasGlobales": {
+    "totalPalabras": 41,
+    "totalCaracteres": 244,
+    "promedioPalabras": 10,
+    "archivosProcesados": 4
+  },
+  "detalleArchivos": [
+    {
+      "palabras": 0,
+      "caracteres": 0,
+      "lineas": 1,
+      "ruta": "demo-archivos\\documento1-mayusculas.txt"
+    },
+    {
+      "palabras": 11,
+      "caracteres": 66,
+      "lineas": 1,
+      "ruta": "demo-archivos\\documento1.txt"
+    },
+    {
+      "palabras": 15,
+      "caracteres": 86,
+      "lineas": 1,
+      "ruta": "demo-archivos\\documento2.txt"
+    },
+    {
+      "palabras": 15,
+      "caracteres": 92,
+      "lineas": 5,
+      "ruta": "demo-archivos\\notas.md"
+    }
+  ]
+}

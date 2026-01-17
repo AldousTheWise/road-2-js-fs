@@ -1,0 +1,30 @@
+[  
+   {
+    "id": 1, 
+    "imagen": "/static/images/laptop.webp",
+    "nombre": "Laptop Gaming", 
+    "precio": 1200, 
+    "categoria": "Electrónica"
+    }, 
+    {
+    "id": 2, 
+    "imagen": "/static/images/mouse.webp",
+    "nombre": "Mouse Inalámbrico", 
+    "precio": 50, 
+    "categoria": "Accesorios"
+    },
+    { 
+    "id": 3, 
+    "imagen": "/static/images/tecladomecanico.jpg",
+    "nombre": "Teclado Mecánico", 
+    "precio": 150, 
+    "categoria": "Accesorios" 
+    },
+    {
+    "id": 4, 
+    "imagen": "/static/images/monitor.jpg",
+    "nombre": "Monitor 27 pulgadas", 
+    "precio": 300, 
+    "categoria": "Electrónica" 
+    }
+]
