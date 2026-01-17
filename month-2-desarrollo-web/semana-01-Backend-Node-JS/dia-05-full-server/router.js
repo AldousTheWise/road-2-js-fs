@@ -1,59 +1,58 @@
 // router.js
-const url = require("url");
-
 class Router {
   constructor() {
-    this.routes = {};
+    this.routes = {
+      GET: [],
+      POST: [],
+      PUT: [],
+      DELETE: [],
+    };
     this.middlewares = [];
   }
 
-  // Agregar middleware global
   use(middleware) {
     this.middlewares.push(middleware);
   }
 
-  //  Registrar rutas con diferentes métodos
-  addRoute(method, path, ...handlers) {
-    if (!this.routes[method]) {
-      this.routes[method] = [];
+  addRoute(method, path, handler) {
+    const normalizedMethod = method.toUpperCase();
+
+    if (!this.routes[normalizedMethod]) {
+      this.routes[normalizedMethod] = [];
     }
 
-    // Convertir path con params a regex
     const paramNames = [];
     const regexPath = path.replace(/:(\w+)/g, (match, paramName) => {
       paramNames.push(paramName);
       return "([^/]+)";
     });
 
-    this.routes[method].push({
-      originalPath: path,
+    this.routes[normalizedMethod].push({
+      path,
       regex: new RegExp(`^${regexPath}$`),
       paramNames,
-      handlers,
+      handler,
     });
   }
 
-  // Metodos
-  get(path, ...handlers) {
-    this.addRoute("GET", path, ...handlers);
+  get(path, handler) {
+    this.addRoute("GET", path, handler);
   }
 
-  post(path, ...handlers) {
-    this.addRoute("POST", path, ...handlers);
+  post(path, handler) {
+    this.addRoute("POST", path, handler);
   }
 
-  put(path, ...handlers) {
-    this.addRoute("PUT", path, ...handlers);
+  put(path, handler) {
+    this.addRoute("PUT", path, handler);
   }
 
-  delete(path, ...handlers) {
-    this.addRoute("DELETE", path, ...handlers);
+  delete(path, handler) {
+    this.addRoute("DELETE", path, handler);
   }
 
-  // Encontrar ruta que coincida
   findRoute(method, pathname) {
-    const methodRoutes = this.routes[method];
-    if (!methodRoutes) return null;
+    const methodRoutes = this.routes[method] || [];
 
     for (const route of methodRoutes) {
       const match = pathname.match(route.regex);
@@ -63,55 +62,35 @@ class Router {
           params[name] = match[index + 1];
         });
 
-        return { route, params };
+        return {
+          route,
+          params,
+          handler: route.handler,
+        };
       }
     }
+
     return null;
   }
 
-  // Ejecutar middlewares y handlers
-  async execute(request, response, routeInfo) {
-    const { route, params } = routeInfo;
+  async execute(context, routeInfo) {
+    const { route, params, handler } = routeInfo;
 
-    // Crear contexto
-    const context = {
-      request,
-      response,
-      params,
-      query: url.parse(request.url, true).query,
-      body: null,
-    };
+    // Agregar params al contexto
+    context.params = params;
 
-    // Función para ejecutar handlers
-    const runHandlers = async () => {
-      for (const handler of route.handlers) {
-        const result = await handler(context);
-        if (result === "next") continue;
-        if (result !== undefined) return result;
+    // Función para ejecutar middlewares en cadena
+    const executeMiddlewares = async (index) => {
+      if (index < this.middlewares.length) {
+        const middleware = this.middlewares[index];
+        await middleware(context, () => executeMiddlewares(index + 1));
+      } else {
+        // Ejecutar el handler final
+        await handler(context);
       }
     };
 
-    // Función para ejecutar middlewares en cadena
-    const runMiddlewares = async () => {
-      // Crear una copia de los middlewares
-      const middlewares = [...this.middlewares];
-
-      // Función next recursiva
-      const next = async () => {
-        if (middlewares.length > 0) {
-          const middleware = middlewares.shift();
-          await middleware(context, next);
-        } else {
-          // Todos los middlewares ejecutados, ahora ejecutar handlers
-          await runHandlers();
-        }
-      };
-
-      await next();
-    };
-
-    // Iniciar la cadena de middlewares
-    await runMiddlewares();
+    await executeMiddlewares(0);
   }
 }
 

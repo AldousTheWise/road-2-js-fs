@@ -1,12 +1,11 @@
-// server.js
+// server.js - VERSIÓN FUNCIONAL
 const http = require("http");
-const url = require("url");
 const fs = require("fs");
 const path = require("path");
 const Router = require("./router.js");
 const TemplateEngine = require("./templates.js");
 const StaticServer = require("./static-server.js");
-const { logger, cors, jsonParser } = require("./middleware.js");
+const middlewares = require("./middlewares");
 
 let productos = [];
 try {
@@ -23,10 +22,13 @@ const router = new Router();
 const templates = new TemplateEngine();
 const staticServer = new StaticServer();
 
-router.use(logger);
-router.use(cors);
-router.use(jsonParser);
+// Usar middlewares (sin duplicados)
+router.use(middlewares.logger);
+router.use(middlewares.cors);
+router.use(middlewares.jsonParser);
+router.use(middlewares.staticFiles);
 
+// RUTAS - Mantener tus handlers originales
 router.get("/", async (context) => {
   const { response } = context;
 
@@ -43,13 +45,9 @@ router.get("/", async (context) => {
 router.get("/productos", async (context) => {
   const { response, query } = context;
 
-  // Copiar todos los productos
   let productosFiltrados = [...productos];
-
-  // Verificar si se aplicó algún filtro
   const filtroAplicado = query.categoria || query.maxPrecio || query.ordenar;
 
-  // Aplicar filtros SOLO si existen
   if (query.categoria) {
     productosFiltrados = productosFiltrados.filter(
       (p) => p.categoria === query.categoria
@@ -63,20 +61,18 @@ router.get("/productos", async (context) => {
     );
   }
 
-  // Ordenar si se especifica
   if (query.ordenar === "precio_asc") {
     productosFiltrados.sort((a, b) => a.precio - b.precio);
   } else if (query.ordenar === "precio_desc") {
     productosFiltrados.sort((a, b) => b.precio - a.precio);
   }
 
-  // Preparar datos para el template
   const templateData = {
     titulo: "Nuestros Productos",
-    productos: productosFiltrados, // Array de productos
-    productosCount: productosFiltrados.length, // Número como variable separada
+    productos: productosFiltrados,
+    productosCount: productosFiltrados.length,
     tieneProductos: productosFiltrados.length > 0,
-    filtroAplicado: !!filtroAplicado, // Booleano: true si hay filtros
+    filtroAplicado: !!filtroAplicado,
     query: query,
   };
 
@@ -148,7 +144,6 @@ router.get("/api/productos", (context) => {
     resultados.sort((a, b) => b.precio - a.precio);
   }
 
-  // Paginación
   const pagina = parseInt(query.pagina) || 1;
   const limite = parseInt(query.limite) || 10;
   const inicio = (pagina - 1) * limite;
@@ -182,21 +177,42 @@ router.get("/api/productos/:id", (context) => {
 
 const servidor = http.createServer(async (request, response) => {
   const { method } = request;
-  const parsedUrl = url.parse(request.url, true);
-  const { pathname } = parsedUrl;
 
   try {
+    // Usar URL moderno
+    const baseUrl = `http://${request.headers.host || "localhost"}`;
+    const urlObj = new URL(request.url, baseUrl);
+    const pathname = urlObj.pathname;
+
+    // Extraer query parameters
+    const query = {};
+    urlObj.searchParams.forEach((value, key) => {
+      query[key] = value;
+    });
+
+    // Crear contexto
+    const context = {
+      request,
+      response,
+      query,
+      params: {},
+      body: {},
+      user: null,
+    };
+
+    // 1. Intentar servir archivo estático primero
     const archivoServido = await staticServer.serve(request, response);
     if (archivoServido) return;
 
+    // 2. Buscar ruta
     const routeInfo = router.findRoute(method, pathname);
 
     if (routeInfo) {
-      await router.execute(request, response, routeInfo);
+      await router.execute(context, routeInfo);
     } else {
       const html = await templates.render("404", {
         titulo: "Página no encontrada",
-        mensaje: `La ruta ${pathname} no existe en este servidor.`,
+        mensaje: `La ruta ${pathname} no existe.`,
       });
       response.writeHead(404, { "Content-Type": "text/html" });
       response.end(html);
@@ -206,8 +222,7 @@ const servidor = http.createServer(async (request, response) => {
 
     const html = await templates.render("error", {
       titulo: "Error del servidor",
-      mensaje:
-        "Ha ocurrido un error interno. Por favor, inténtelo de nuevo más tarde.",
+      mensaje: "Ha ocurrido un error interno.",
       error: process.env.NODE_ENV === "development" ? error.message : "",
     });
 
@@ -222,15 +237,12 @@ async function iniciarServidor() {
 
     const PUERTO = process.env.PORT || 3000;
     servidor.listen(PUERTO, () => {
-      console.log(
-        `Servidor web completo ejecutándose en http://localhost:${PUERTO}`
-      );
-      console.log(`Página principal: http://localhost:${PUERTO}`);
+      console.log(`Servidor ejecutándose en http://localhost:${PUERTO}`);
+      console.log(`Home: http://localhost:${PUERTO}`);
       console.log(`Productos: http://localhost:${PUERTO}/productos`);
-      console.log(`API: http://localhost:${PUERTO}/api/productos`);
     });
   } catch (error) {
-    console.error("Error al iniciar el servidor:", error);
+    console.error("Error al iniciar:", error);
     process.exit(1);
   }
 }
@@ -238,7 +250,7 @@ async function iniciarServidor() {
 process.on("SIGINT", () => {
   console.log("\nCerrando servidor...");
   servidor.close(() => {
-    console.log("Servidor cerrado correctamente");
+    console.log("Servidor cerrado");
     process.exit(0);
   });
 });

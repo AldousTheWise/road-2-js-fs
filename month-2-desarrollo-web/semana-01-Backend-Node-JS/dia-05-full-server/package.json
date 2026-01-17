@@ -10,5 +10,9 @@
   "keywords": [],
   "author": "Aldo Yañez <aldo.yanez01@gmail.com>",
   "license": "ISC",
-  "type": "commonjs"
+  "type": "commonjs",
+  "dependencies": {
+    "bcryptjs": "3.0.3",
+    "uuid": "13.0.0"
+  }
 }
