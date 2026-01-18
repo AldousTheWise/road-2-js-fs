@@ -1,3 +1,4 @@
+// templates.js
 const fs = require("fs").promises;
 const path = require("path");
 
@@ -7,91 +8,79 @@ class TemplateEngine {
   }
 
   async render(templateName, data = {}) {
-    // 1. Leer layout
     const layoutPath = path.join(this.viewsPath, "layout.html");
     let html = await fs.readFile(layoutPath, "utf8");
 
-    // 2. Leer el template específico
     const templatePath = path.join(this.viewsPath, `${templateName}.html`);
     const content = await fs.readFile(templatePath, "utf8");
 
-    // 3. Meter el content dentro del layout
+    // 1. Inyectar contenido en el layout
     html = html.replace("{{content}}", content);
 
-    // 4. Procesar el template
-    html = this.procesarTemplate(html, data);
+    // 2. Procesar la lógica de control (IF / UNLESS)
+    html = this.procesarCondicionales(html, data);
+
+    // 3. Procesar bucles y variables finales
+    html = this.procesarVariablesYEach(html, data);
 
     return html;
   }
 
-  procesarTemplate(html, data) {
-    // 1. Procesar {{#if condition}}
-    html = html.replace(
-      /\{\{#if (\w+)\}\}([\s\S]*?)\{\{\/if\}\}/g,
-      (match, condition, contenido) => {
-        const valor = data[condition];
-        if (valor) {
-          return this.procesarTemplate(contenido, data);
-        }
-        return "";
-      }
-    );
+  procesarCondicionales(html, data) {
+    // Regex para detectar {{#if variable}}...{{/if}}
+    // Soporta multilínea [\s\S]*?
+    const regexIf = /\{\{#if\s+(\w+)\}\}([\s\S]*?)\{\{\/if\}\}/g;
+    const regexUnless = /\{\{#unless\s+(\w+)\}\}([\s\S]*?)\{\{\/unless\}\}/g;
 
-    // 2. Procesar {{#unless condition}}
-    html = html.replace(
-      /\{\{#unless (\w+)\}\}([\s\S]*?)\{\{\/unless\}\}/g,
-      (match, condition, contenido) => {
-        const valor = data[condition];
-        if (!valor) {
-          return this.procesarTemplate(contenido, data);
-        }
-        return "";
-      }
-    );
+    let resultado = html;
 
-    // 3. Procesar {{#each array}}
-    html = html.replace(
-      /\{\{#each (\w+)\}\}([\s\S]*?)\{\{\/each\}\}/g,
+    // Procesar IFs
+    resultado = resultado.replace(regexIf, (match, variable, contenido) => {
+      return data[variable] ? this.procesarCondicionales(contenido, data) : "";
+    });
+
+    // Procesar UNLESS
+    resultado = resultado.replace(regexUnless, (match, variable, contenido) => {
+      return !data[variable] ? this.procesarCondicionales(contenido, data) : "";
+    });
+
+    return resultado;
+  }
+
+  procesarVariablesYEach(html, data) {
+    // Procesar {{#each}}
+    let resultado = html.replace(
+      /\{\{#each\s+(\w+)\}\}([\s\S]*?)\{\{\/each\}\}/g,
       (match, arrayName, contenido) => {
         const array = data[arrayName];
-        if (!Array.isArray(array)) {
-          return "";
-        }
+        if (!Array.isArray(array)) return "";
 
-        let resultado = "";
-        for (const item of array) {
-          let itemHtml = contenido;
-          // Reemplazar variables dentro del item (pueden ser objeto.propiedad)
-          itemHtml = itemHtml.replace(/\{\{([\w\.]+)\}\}/g, (match2, key) => {
-            return this.obtenerValor(item, key);
-          });
-          resultado += itemHtml;
-        }
-        return resultado;
-      }
+        return array
+          .map((item) => {
+            let itemHtml = contenido;
+            return itemHtml.replace(/\{\{([\w\.]+)\}\}/g, (m, key) => {
+              return this.obtenerValor(item, key);
+            });
+          })
+          .join("");
+      },
     );
 
-    // 4. Procesar TODAS las variables {{variable}} o {{objeto.propiedad}}
-    html = html.replace(/\{\{([\w\.]+)\}\}/g, (match, key) => {
+    // Procesar variables globales del objeto data
+    resultado = resultado.replace(/\{\{([\w\.]+)\}\}/g, (match, key) => {
+      // Evitamos procesar {{content}} si por alguna razón sigue ahí
+      if (key === "content") return match;
       return this.obtenerValor(data, key);
     });
 
-    return html;
+    return resultado;
   }
 
-  // Método auxiliar para obtener valores (simple o objeto.propiedad)
   obtenerValor(obj, key) {
-    // Si la key tiene punto (ej: producto.nombre)
     if (key.includes(".")) {
-      const partes = key.split(".");
-      let valor = obj;
-      for (const parte of partes) {
-        valor = valor ? valor[parte] : undefined;
-      }
-      return valor !== undefined ? valor : "";
+      return key.split(".").reduce((o, i) => (o ? o[i] : ""), obj) || "";
     }
-    // Si es una key simple
-    return obj[key] !== undefined ? obj[key] : "";
+    return obj[key] !== undefined ? String(obj[key]) : "";
   }
 }
 

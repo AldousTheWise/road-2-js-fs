@@ -1,0 +1,22 @@
+<h1>Panel de Administración</h1>
+
+<div class="admin-dashboard">
+    <div class="welcome-banner">
+        <h2>Bienvenido, {{session.nombre}}</h2>
+        <p>Desde aquí puedes gestionar la tienda.</p>
+    </div>
+
+    <div class="admin-cards">
+        <div class="card">
+            <h3>Productos</h3>
+            <p>Total de productos: {{productosCount}}</p>
+            <a href="/admin/productos" class="btn-primary">Gestionar Inventario</a>
+        </div>
+
+        <div class="card">
+            <h3>Usuarios</h3>
+            <p>Ver y gestionar cuentas registradas.</p>
+            <a href="/admin/usuarios" class="btn-secondary">Ver Usuarios</a>
+        </div>
+    </div>
+</div>

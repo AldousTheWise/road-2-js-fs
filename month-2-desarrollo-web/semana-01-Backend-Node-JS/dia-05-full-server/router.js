@@ -14,7 +14,7 @@ class Router {
     this.middlewares.push(middleware);
   }
 
-  addRoute(method, path, handler) {
+  addRoute(method, path, ...handlers) {
     const normalizedMethod = method.toUpperCase();
 
     if (!this.routes[normalizedMethod]) {
@@ -31,24 +31,24 @@ class Router {
       path,
       regex: new RegExp(`^${regexPath}$`),
       paramNames,
-      handler,
+      handlers,
     });
   }
 
-  get(path, handler) {
-    this.addRoute("GET", path, handler);
+  get(path, ...handlers) {
+    this.addRoute("GET", path, ...handlers);
   }
 
-  post(path, handler) {
-    this.addRoute("POST", path, handler);
+  post(path, ...handlers) {
+    this.addRoute("POST", path, ...handlers);
   }
 
-  put(path, handler) {
-    this.addRoute("PUT", path, handler);
+  put(path, ...handlers) {
+    this.addRoute("PUT", path, ...handlers);
   }
 
-  delete(path, handler) {
-    this.addRoute("DELETE", path, handler);
+  delete(path, ...handlers) {
+    this.addRoute("DELETE", path, ...handlers);
   }
 
   findRoute(method, pathname) {
@@ -65,7 +65,7 @@ class Router {
         return {
           route,
           params,
-          handler: route.handler,
+          handlers: route.handlers,
         };
       }
     }
@@ -74,23 +74,30 @@ class Router {
   }
 
   async execute(context, routeInfo) {
-    const { route, params, handler } = routeInfo;
+    const { route, params, handlers } = routeInfo;
 
     // Agregar params al contexto
     context.params = params;
 
-    // Función para ejecutar middlewares en cadena
-    const executeMiddlewares = async (index) => {
-      if (index < this.middlewares.length) {
-        const middleware = this.middlewares[index];
-        await middleware(context, () => executeMiddlewares(index + 1));
-      } else {
-        // Ejecutar el handler final
-        await handler(context);
+    // Combinar middlewares globales con los específicos de la ruta
+    const allHandlers = [...this.middlewares, ...handlers];
+
+    // Función para ejecutar handlers en cadena
+    const executeHandlers = async (index) => {
+      if (index < allHandlers.length) {
+        const handler = allHandlers[index];
+
+        // Si el handler espera 2 params (context, next), es middleware
+        if (handler.length === 2) {
+          await handler(context, () => executeHandlers(index + 1));
+        } else {
+          // Si espera 1 param, es handlers final
+          await handler(context);
+        }
       }
     };
 
-    await executeMiddlewares(0);
+    await executeHandlers(0);
   }
 }
 

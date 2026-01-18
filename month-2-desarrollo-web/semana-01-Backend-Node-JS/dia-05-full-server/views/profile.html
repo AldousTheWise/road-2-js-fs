@@ -1,0 +1,48 @@
+<!-- views/profile.html -->
+<h1>Mi Perfil</h1>
+
+<div class="profile-container">
+    <div class="profile-header">
+        <div class="profile-avatar">
+            {{inicialNombre}}
+        </div>
+        <div class="profile-info">
+            <h2>{{session.nombre}}</h2>
+            <p>{{session.email}}</p>
+            <span class="role-badge role-{{session.rol}}">
+                {{session.rol}}
+            </span>
+        </div>
+    </div>
+
+    <div class="profile-details">
+        <div class="detail-card">
+            <h3>Información de Cuenta</h3>
+            <p><strong>Rol:</strong> {{session.rol}}</p>
+            <p><strong>ID de Usuario:</strong> {{userId}}</p>
+        </div>
+
+        <div class="detail-card">
+            <h3>Actividad</h3>
+            <p><strong>Último acceso:</strong> {{fechaActual}}</p>
+            <p><strong>Sesión activa:</strong> Sí</p>
+        </div>
+
+        <div class="detail-card">
+            <h3>Acciones</h3>
+            <p>
+                <a href="/productos" class="btn-primary">Ver Productos</a>
+            </p>
+
+            {{#if esAdmin}}
+            <p>
+                <a href="/admin" class="btn-secondary">Panel Admin</a>
+            </p>
+            {{/if}}
+
+            <p>
+                <a href="/logout" class="btn-danger">Cerrar Sesión</a>
+            </p>
+        </div>
+    </div>
+</div>

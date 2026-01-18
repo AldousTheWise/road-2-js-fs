@@ -2,17 +2,25 @@
   {
     "id": 1,
     "email": "admin@tienda.com",
-    "password": "admin123",
+    "password": "$2b$10$wcnvZ0Zu4Qq2s97QrS7wleFH7L6Cg1waqRe2wzWrIiYL8UHWUuIe2",
     "nombre": "Administrador",
     "rol": "admin",
     "fechaRegistro": "2024-01-01T00:00:00.000Z"
   },
   {
     "id": 2,
-    "email": "usuario@tienda.com", 
-    "password": "usuario123",
+    "email": "usuario@tienda.com",
+    "password": "$2b$10$wcnvZ0Zu4Qq2s97QrS7wleFH7L6Cg1waqRe2wzWrIiYL8UHWUuIe2",
     "nombre": "Usuario Demo",
-    "rol": "user",
+    "rol": "usuario",
     "fechaRegistro": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 3,
+    "email": "usuario2@tienda.com",
+    "password": "$2b$10$M7n.51uOVKopmWTZaNY3qO5jMnQvlEwrWj/NRdesXoTljSZH4uft.",
+    "nombre": "Aldo Yañez",
+    "rol": "usuario",
+    "fechaRegistro": "2026-01-18T08:31:58.828Z"
   }
 ]
