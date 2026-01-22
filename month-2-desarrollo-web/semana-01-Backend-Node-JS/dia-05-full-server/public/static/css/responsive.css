@@ -19,7 +19,6 @@
     background: rgba(255, 255, 255, 0.05);
   }
 
-  .productos-grid,
   .grid-productos {
     grid-template-columns: 1fr;
   }

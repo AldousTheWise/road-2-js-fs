@@ -1,13 +1,9 @@
-// static-server.js - Servidor optimizado de archivos estáticos
 const fs = require("fs").promises;
 const path = require("path");
-const url = require("url");
-const { createReadStream } = require("fs");
 
 class StaticServer {
-  constructor(publicPath = "./public") {
-    this.publicPath = publicPath;
-    this.cache = new Map();
+  constructor() {
+    this.cache = new Map(); // Para no leer el disco mil veces
     this.mimeTypes = {
       ".html": "text/html",
       ".css": "text/css",
@@ -16,85 +12,88 @@ class StaticServer {
       ".png": "image/png",
       ".jpg": "image/jpeg",
       ".jpeg": "image/jpeg",
+      ".webp": "image/webp",
       ".gif": "image/gif",
       ".svg": "image/svg+xml",
       ".ico": "image/x-icon",
-      ".txt": "text/plain",
     };
   }
 
-  // Servir archivo estático
-  async serve(request, response) {
-    const pathname = request.url;
+  // MÉTODO 1: El servidor de archivos con caché e inteligencia de rutas
+  async serve(request, response, parsedPathName) {
+    const pathname =
+      parsedPathName ||
+      new URL(request.url, `http://request.headers.host`).pathname;
 
-    if (!pathname.startsWith("/static/")) {
+    // Si ya está en caché, lo servimos de inmediato
+    if (this.cache.has(pathname)) {
+      const { content, contentType } = this.cache.get(pathname);
+      this.sendResponse(response, 200, contentType, content);
+      return true;
+    }
+
+    let filePath;
+    // Lógica de mapeo para tu tree
+    if (pathname.startsWith("/static/")) {
+      filePath = path.join(process.cwd(), "public", pathname);
+    } else if (pathname.startsWith("/uploads/")) {
+      filePath = path.join(process.cwd(), pathname);
+    } else {
       return false;
     }
 
-    const relativePath = pathname.substring(1);
-    const filePath = path.join(__dirname, "public", relativePath);
-
     try {
-      const content = await fs.readFile(filePath);
-
-      // Determinar Content-Type
+      const content = await fs.readFile(path.normalize(filePath));
       const ext = path.extname(filePath).toLowerCase();
-      let contentType = "application/octet-stream";
+      const contentType = this.mimeTypes[ext] || "application/octet-stream";
 
-      if (ext === ".jpg" || ext === ".jpeg") contentType = "image/jpeg";
-      else if (ext === ".png") contentType = "image/png";
-      else if (ext === ".webp") contentType = "image/webp";
-      else if (ext === ".gif") contentType = "image/gif";
-      else if (ext === ".css") contentType = "text/css";
-      else if (ext === ".js") contentType = "application/javascript";
-      else if (ext === ".html") contentType = "text/html";
-
-      response.writeHead(200, {
-        "Content-Type": contentType,
-        "Cache-Control": "public, max-age=3600",
-      });
-
-      response.end(content);
-      return true;
-    } catch (error) {
-      console.log(`[STATIC] Error: ${error.code} - ${error.message}`);
-
-      // Para errores 404, enviar respuesta simple
-      if (error.code === "ENOENT") {
-        response.writeHead(404, { "Content-Type": "text/plain" });
-        response.end("404 - File not found");
-      } else {
-        response.writeHead(500, { "Content-Type": "text/plain" });
-        response.end("500 - Internal server error");
+      // Guardar en caché (solo archivos estáticos, no uploads para ahorrar RAM)
+      if (pathname.startsWith("/static/")) {
+        this.cache.set(pathname, { content, contentType });
       }
 
+      this.sendResponse(response, 200, contentType, content);
       return true;
+    } catch (error) {
+      if (error.code === "ENOENT") {
+        return this.sendError(response, 404, "File not found");
+      }
+      return this.sendError(response, 500, "Server Error");
     }
   }
 
+  // MÉTODO 2: Envío de respuestas centralizado
+  sendResponse(response, statusCode, contentType, content) {
+    response.writeHead(statusCode, {
+      "Content-Type": contentType,
+      "Cache-Control": "public, max-age=3600",
+      "X-Content-Type-Options": "nosniff",
+    });
+    response.end(content);
+  }
+
+  // MÉTODO 3: Manejo de errores consistente
   sendError(response, statusCode, message) {
-    if (
-      statusCode === 404 &&
-      response.getHeader("Content-Type")?.includes("image")
-    ) {
-      response.writeHead(404, { "Content-Type": "text/plain" });
-      response.end("404 Image Not Found");
-    } else {
-      response.writeHead(statusCode, { "Content-Type": "application/json" });
-      response.end(JSON.stringify({ error: message, status: statusCode }));
-    }
+    response.writeHead(statusCode, { "Content-Type": "text/plain" });
+    response.end(`${statusCode} - ${message}`);
     return true;
   }
 
-  // Método para preload de archivos críticos
+  // MÉTODO 4: Preload de archivos críticos (CSS/JS base)
   async preload(files) {
     for (const file of files) {
-      const filePath = path.join(this.publicPath, file);
+      // El file debe venir como '/static/css/base.css'
+      const filePath = path.join(process.cwd(), "public", file);
       try {
         const content = await fs.readFile(filePath);
-        this.cache.set(file, content);
+        const ext = path.extname(filePath).toLowerCase();
+        this.cache.set(file, {
+          content,
+          contentType: this.mimeTypes[ext],
+        });
+        console.log(`[PRELOAD] Cache listo: ${file}`);
       } catch (error) {
-        console.warn(`No se pudo precargar ${file}:`, error.message);
+        console.warn(`[PRELOAD] Error en ${file}:`, error.message);
       }
     }
   }

@@ -1,35 +1,48 @@
-// server.js - VERSIÓN COMPLETA Y CORREGIDA
+// server.js
+
+// === IMPORTACION ===
+
 const http = require("http");
 const fs = require("fs");
+const fsPromise = fs.promises;
 const path = require("path");
+const { v4: uuidv4 } = require("uuid");
 const Router = require("./router.js");
 const TemplateEngine = require("./templates.js");
 const StaticServer = require("./static-server.js");
 const middlewares = require("./middlewares");
 
-// Cargar productos
-let productos = [];
-try {
-  const productosPath = path.join(__dirname, "data", "productos.json");
-  const data = fs.readFileSync(productosPath, "utf8");
-  productos = JSON.parse(data);
-  console.log(`Productos cargados: ${productos.length} productos`);
-} catch (error) {
-  console.error("Error al cargar productos.json:", error.message);
-  productos = [];
-}
-
 const router = new Router();
 const templates = new TemplateEngine();
 const staticServer = new StaticServer();
 
-// Middlewares globales
+// ===  MIDDLEWARES GLOBALES ===
+
 router.use(middlewares.logger);
 router.use(middlewares.cors);
 router.use(middlewares.jsonParser);
 router.use(middlewares.formParser);
+router.use(middlewares.fileUpload);
 router.use(middlewares.staticFiles);
 router.use(middlewares.sessions);
+
+// === GESTIÓN DE PRODUCTOS ===
+const productosPath = path.join(__dirname, "data", "productos.json");
+let productos = [];
+
+// Función única para leer los productos
+function cargarProductos() {
+  try {
+    const data = fs.readFileSync(productosPath, "utf8");
+    productos = JSON.parse(data);
+    console.log(`[SISTEMA] Productos en memoria: ${productos.length}`);
+    return productos;
+  } catch (error) {
+    console.error("Error al leer productos.json", error.message);
+  }
+}
+
+cargarProductos();
 
 // Helper para datos de autenticación
 function getAuthData(context) {
@@ -45,15 +58,72 @@ function getAuthData(context) {
   };
 }
 
+// Helper para alertas
+function prepareAlert(queryOrObject) {
+  if (!queryOrObject) return { alerta: false };
+
+  let tipo = null;
+  let mensajeFinal = "";
+
+  const esExito =
+    queryOrObject.success === "true" ||
+    queryOrObject.registered === "true" ||
+    queryOrObject.logout === "true";
+  const esError = queryOrObject.error || queryOrObject.tipo === "error";
+
+  if (esExito) {
+    tipo = "success";
+    const mensajesPersonalizados = {
+      Eliminado: "Producto eliminado exitosamente",
+      Editado: "Edición del producto ejecutada",
+      Creado: "Producto ingresado exitosamente",
+      RegistroExitoso: "Cuenta creada exitosamente",
+      SesionCerrada: "Has cerrado sesión correctamente",
+    };
+
+    // Lógica para elegir la clave correcta
+    let clave = queryOrObject.mensaje;
+    if (queryOrObject.registered === "true") clave = "RegistroExitoso";
+    if (queryOrObject.logout === "true") clave = "SesionCerrada";
+
+    mensajeFinal =
+      mensajesPersonalizados[clave] || clave || "Operación ejecutada";
+  } else if (esError) {
+    tipo = "error";
+    const erroresPersonalizados = {
+      LoginError: "Email o contraseña incorrectos",
+      AuthRequerida: "Debes iniciar sesión para acceder",
+      Falta_Imagen: "Debes subir una imagen para el producto",
+    };
+
+    const rawError = queryOrObject.error || queryOrObject.mensaje;
+    // AQUÍ ESTABA EL FALLO: Ahora sí asignamos el mensaje final
+    mensajeFinal =
+      erroresPersonalizados[rawError] || rawError || "Ha ocurrido un error";
+  }
+
+  if (!tipo) return { alerta: false };
+
+  return {
+    alerta: true,
+    alerta_tipo: tipo,
+    alerta_titulo: tipo === "success" ? "CONFIRMACIÓN" : "ATENCIÓN",
+    alerta_mensaje: mensajeFinal,
+    alerta_es_success: tipo === "success",
+    alerta_es_error: tipo === "error",
+  };
+}
+
 // Helper para construir datos de template
 function buildTemplateData(context, extraData = {}) {
   return {
     ...getAuthData(context),
+    ...prepareAlert(context.query),
     ...extraData,
   };
 }
 
-// ==================== RUTAS PÚBLICAS ====================
+// === RUTAS PÚBLICAS ===
 
 // Página principal
 router.get("/", async (context) => {
@@ -111,7 +181,7 @@ router.get("/productos", async (context) => {
 // Detalle de producto
 router.get("/productos/:id", async (context) => {
   const { params } = context;
-  const id = parseInt(params.id);
+  const id = params.id; // Ya no usamos parseInt porque usamos uuidv4 (string)
   const producto = productos.find((p) => p.id === id);
 
   if (!producto) {
@@ -149,7 +219,7 @@ router.get("/about", async (context) => {
   context.response.end(html);
 });
 
-// ==================== API PÚBLICA ====================
+// === API PÚBLICA ===
 
 router.get("/api/productos", (context) => {
   const { query } = context;
@@ -193,7 +263,7 @@ router.get("/api/productos", (context) => {
 
 router.get("/api/productos/:id", (context) => {
   const { params } = context;
-  const id = parseInt(params.id);
+  const id = params.id;
   const producto = productos.find((p) => p.id === id);
 
   if (!producto) {
@@ -206,7 +276,7 @@ router.get("/api/productos/:id", (context) => {
   context.response.end(JSON.stringify(producto));
 });
 
-// ==================== AUTENTICACIÓN ====================
+// === AUTENTICACIÓN Y LOGIN ===
 
 // Login - GET
 router.get("/login", async (context) => {
@@ -241,7 +311,7 @@ router.post("/login", async (context) => {
     if (!user) {
       const templateData = buildTemplateData(context, {
         titulo: "Iniciar Sesión",
-        error: "Email o contraseña incorrectos",
+        ...prepareAlert({ error: "LoginError" }),
       });
 
       const html = await templates.render("login", templateData);
@@ -262,7 +332,6 @@ router.post("/login", async (context) => {
     console.error("Error en login:", error);
     const templateData = buildTemplateData(context, {
       titulo: "Iniciar Sesión",
-      error: "Error al iniciar sesión",
     });
 
     const html = await templates.render("login", templateData);
@@ -290,7 +359,7 @@ router.get("/logout", async (context) => {
   const cookie = `sessionId=; HttpOnly; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT`;
 
   context.response.writeHead(302, {
-    Location: "/",
+    Location: "/?logout=true",
     "Set-Cookie": cookie,
   });
   context.response.end();
@@ -315,6 +384,8 @@ router.get("/perfil", async (context) => {
   context.response.writeHead(200, { "Content-Type": "text/html" });
   context.response.end(html);
 });
+
+// === REGISTRO ===
 
 // Registro - GET
 router.get("/register", async (context) => {
@@ -349,13 +420,16 @@ router.post("/register", async (context) => {
       password,
     });
 
-    context.response.writeHead(302, { Location: "/login?registered=true" });
+    context.response.writeHead(302, {
+      Location: "/login?registered=true",
+    });
     context.response.end();
   } catch (error) {
     const templateData = buildTemplateData(context, {
       titulo: "Crear Cuenta",
       error: error.message,
       formData: { nombre, email },
+      ...prepareAlert({ error: error.message }),
     });
 
     const html = await templates.render("register", templateData);
@@ -364,36 +438,20 @@ router.post("/register", async (context) => {
   }
 });
 
-// Admin
+// === ADMIN ===
+// Listar productos en el panel
 router.get("/admin", async (context) => {
   const auth = getAuthData(context);
-
-  // 1. Verificación de sesión
-  if (auth.noAuth) {
-    context.response.writeHead(302, { Location: "/login" });
-    context.response.end();
-    return;
-  }
-
-  // 2. Verificación de Rol (Usando el helper)
   if (!auth.esAdmin) {
-    // Es más coherente renderizar una página de error con tu layout
-    const templateData = buildTemplateData(context, {
-      titulo: "Acceso Denegado",
-      mensaje:
-        "No tienes permisos suficientes para entrar al panel de administración.",
-    });
-
-    const html = await templates.render("404", templateData); // O una vista de 'error' si tienes
-    context.response.writeHead(403, { "Content-Type": "text/html" });
-    context.response.end(html);
-    return;
+    context.response.writeHead(302, { Location: "/login?error=AuthRequerida" });
+    return context.response.end();
   }
 
+  const listaRenderizada = cargarProductos();
   const templateData = buildTemplateData(context, {
     titulo: "Panel de Administración",
-    totalProductos: productos.length,
-    ultimosProductos: productos.slice(-5).reverse(),
+    listaProductos: [...listaRenderizada].reverse(),
+    totalProductos: listaRenderizada.length,
     nombreAdmin: context.session.nombre,
     fecha: new Date().toLocaleDateString("es-ES"),
   });
@@ -403,8 +461,70 @@ router.get("/admin", async (context) => {
   context.response.end(html);
 });
 
-// ==================== SERVER HANDLER ====================
+// Agregar producto nuevo
+router.post("/admin/productos", async (context) => {
+  const { nombre, precio, categoria, descripcion } = context.body;
+  if (!context.file) {
+    context.response.writeHead(302, { Location: "/admin?error=Falta_Imagen" });
+    context.response.end();
+  }
 
+  const nuevo = {
+    id: uuidv4(),
+    nombre,
+    categoria: categoria || "Varios",
+    descripcion: descripcion || "",
+    precio: parseFloat(precio) || 0,
+    imagen: `/static/images/${context.file.filename}`,
+    fechaCarga: new Date().toISOString(),
+  };
+
+  productos.push(nuevo);
+  await fsPromise.writeFile(productosPath, JSON.stringify(productos, null, 2));
+  context.response.writeHead(302, {
+    Location: "/admin?success=true&mensaje=Creado",
+  });
+  context.response.end();
+});
+
+// Editar producto existente
+router.post("/admin/productos/editar/:id", async (context) => {
+  const { id } = context.params;
+  const { nombre, precio, categoria } = context.body;
+
+  const index = productos.findIndex((p) => p.id === id);
+  if (index !== -1) {
+    productos[index].nombre = nombre;
+    productos[index].categoria = categoria;
+    productos[index].precio = parseFloat(precio);
+    await fsPromise.writeFile(
+      productosPath,
+      JSON.stringify(productos, null, 2),
+    );
+  }
+  context.response.writeHead(302, {
+    Location: "/admin?success=true&mensaje=Editado",
+  });
+  context.response.end();
+});
+
+// Eliminar producto
+router.post("/admin/productos/eliminar/:id", async (context) => {
+  const { id } = context.params;
+  productos = productos.filter((p) => p.id !== id);
+
+  await fsPromise.writeFile(productosPath, JSON.stringify(productos, null, 2));
+  console.log(`[ELIMINAR] Producto removido: ${id}`);
+
+  context.response.writeHead(302, {
+    Location: "/admin?success=true&mensaje=Eliminado",
+  });
+  context.response.end();
+});
+
+// === SERVER ===
+
+// Helper para server
 const servidor = http.createServer(async (request, response) => {
   const { method } = request;
 
@@ -427,12 +547,17 @@ const servidor = http.createServer(async (request, response) => {
       user: null,
     };
 
-    const archivoServido = await staticServer.serve(request, response);
+    const archivoServido = await staticServer.serve(
+      request,
+      response,
+      pathname,
+    );
     if (archivoServido) return;
 
     const routeInfo = router.findRoute(method, pathname);
 
     if (routeInfo) {
+      context.params = routeInfo.params;
       await router.execute(context, routeInfo);
     } else {
       const templateData = buildTemplateData(context, {
@@ -462,7 +587,7 @@ const servidor = http.createServer(async (request, response) => {
   }
 });
 
-// ==================== INICIAR SERVIDOR ====================
+// === Funcionamiento Server ===
 
 async function iniciarServidor() {
   try {

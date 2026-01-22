@@ -1,30 +1,43 @@
-[  
-   {
-    "id": 1, 
+[
+  {
+    "id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
     "imagen": "/static/images/laptop.webp",
-    "nombre": "Laptop Gaming", 
-    "precio": 1200, 
+    "nombre": "Laptop Gaming",
+    "descripcion": "Laptop optimizada para Gaming, marca de prestigio",
+    "precio": 1200,
     "categoria": "Electrónica"
-    }, 
-    {
-    "id": 2, 
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
     "imagen": "/static/images/mouse.webp",
-    "nombre": "Mouse Inalámbrico", 
-    "precio": 50, 
+    "nombre": "Mouse Inalámbrico",
+    "descripcion": "Mouse ergonómico inalámbrico especial para juegos",
+    "precio": 50,
     "categoria": "Accesorios"
-    },
-    { 
-    "id": 3, 
+  },
+  {
+    "id": "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
     "imagen": "/static/images/tecladomecanico.jpg",
-    "nombre": "Teclado Mecánico", 
-    "precio": 150, 
-    "categoria": "Accesorios" 
-    },
-    {
-    "id": 4, 
+    "nombre": "Teclado Mecánico",
+    "descripcion": "Teclado mecánico hecho de materiales resistentes",
+    "precio": 150,
+    "categoria": "Accesorios"
+  },
+  {
+    "id": "ad6d6ec0-979a-4d73-8b7a-97a666e64303",
     "imagen": "/static/images/monitor.jpg",
-    "nombre": "Monitor 27 pulgadas", 
-    "precio": 300, 
-    "categoria": "Electrónica" 
-    }
+    "nombre": "Monitor 27 pulgadas",
+    "descripcion": "Monitor 27 pulgadas con imagen HD",
+    "precio": 300,
+    "categoria": "Electrónica"
+  },
+  {
+    "id": "0751e5ff-d25e-4505-8c72-3dc56c8a8c5b",
+    "nombre": "Buta-Chan",
+    "categoria": "Heroe",
+    "descripcion": "Chanchito hermoso",
+    "precio": 3000,
+    "imagen": "/static/images/1769058195861-lebb.jpg",
+    "fechaCarga": "2026-01-22T05:03:15.944Z"
+  }
 ]

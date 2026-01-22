@@ -1,0 +1,21 @@
+{{#if alerta}}
+<div id="global-toast" class="alert alert-{{alerta_tipo}} toast-notification">
+    <div class="toast-content">
+        <span class="toast-label">{{alerta_titulo}}</span>
+        <span class="toast-text">{{alerta_mensaje}}</span>
+    </div>
+</div>
+<script>
+    (function () {
+        const t = document.getElementById('global-toast');
+        if (t) {
+            setTimeout(() => {
+                t.style.opacity = '0';
+                t.style.transform = 'translateY(-20px)';
+                t.style.transition = 'all 0.6s ease';
+                setTimeout(() => t.remove(), 600);
+            }, 4000);
+        }
+    })();
+</script>
+{{/if}}

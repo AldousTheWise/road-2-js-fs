@@ -7,30 +7,75 @@ class TemplateEngine {
     this.viewsPath = viewsPath;
   }
 
+  /**
+   * Método principal de renderizado
+   */
   async render(templateName, data = {}) {
-    const layoutPath = path.join(this.viewsPath, "layout.html");
-    let html = await fs.readFile(layoutPath, "utf8");
+    try {
+      // 1. Cargar Layout
+      const layoutPath = path.join(this.viewsPath, "layout.html");
+      let html = await fs.readFile(layoutPath, "utf8");
 
-    const templatePath = path.join(this.viewsPath, `${templateName}.html`);
-    const content = await fs.readFile(templatePath, "utf8");
+      // 2. Cargar la vista específica
+      const templatePath = path.join(this.viewsPath, `${templateName}.html`);
+      const content = await fs.readFile(templatePath, "utf8");
 
-    // 1. Inyectar contenido en el layout
-    html = html.replace("{{content}}", content);
+      // 3. Inyectar contenido en el layout
+      html = html.replace("{{content}}", content);
 
-    // 2. Procesar la lógica de control (IF / UNLESS)
-    html = this.procesarCondicionales(html, data);
+      // Cargar componentes dinámicos (Partials)
+      // Esto busca etiquetas {{componente:nombre}} y las reemplaza por el archivo en /views/components/
+      html = await this.cargarComponentes(html);
 
-    // 3. Procesar bucles y variables finales
-    html = this.procesarVariablesYEach(html, data);
+      // 5. Procesar la lógica de control (IF / UNLESS)
+      html = this.procesarCondicionales(html, data);
+      html = this.procesarVariablesYEach(html, data);
 
-    return html;
+      return html;
+    } catch (error) {
+      console.error("Error en TemplateEngine:", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Busca y reemplaza etiquetas {{componente:nombre}} por archivos en views/components/
+   */
+  async cargarComponentes(html) {
+    const regexComponente = /\{\{componente:(\w+)\}\}/g;
+    let resultado = html;
+    let match;
+
+    // Usamos un bucle para procesar todos los componentes encontrados
+    while ((match = regexComponente.exec(resultado)) !== null) {
+      const etiquetaCompleta = match[0]; // {{componente:toast}}
+      const nombreComponente = match[1]; // toast
+      const pathComponente = path.join(
+        this.viewsPath,
+        "partials",
+        `${nombreComponente}.html`,
+      );
+
+      try {
+        const contenidoComponente = await fs.readFile(pathComponente, "utf8");
+        // Reemplazamos la etiqueta por el contenido real del archivo
+        resultado = resultado.replace(etiquetaCompleta, contenidoComponente);
+      } catch (e) {
+        console.warn(
+          `[TemplateEngine] No se encontró el partial: ${nombreComponente}`,
+        );
+        resultado = resultado.replace(etiquetaCompleta, ""); // Limpiar etiqueta fallida
+      }
+
+      // Reiniciamos el índice del regex porque el string ha cambiado de tamaño
+      regexComponente.lastIndex = 0;
+    }
+    return resultado;
   }
 
   procesarCondicionales(html, data) {
-    // Regex para detectar {{#if variable}}...{{/if}}
-    // Soporta multilínea [\s\S]*?
-    const regexIf = /\{\{#if\s+(\w+)\}\}([\s\S]*?)\{\{\/if\}\}/g;
-    const regexUnless = /\{\{#unless\s+(\w+)\}\}([\s\S]*?)\{\{\/unless\}\}/g;
+    const regexIf = /\{\{#if\s+([\w_]+)\}\}([\s\S]*?)\{\{\/if\}\}/g;
+    const regexUnless = /\{\{#unless\s+([\w_]+)\}\}([\s\S]*?)\{\{\/unless\}\}/g;
 
     let resultado = html;
 
@@ -58,7 +103,7 @@ class TemplateEngine {
         return array
           .map((item) => {
             let itemHtml = contenido;
-            return itemHtml.replace(/\{\{([\w\.]+)\}\}/g, (m, key) => {
+            return itemHtml.replace(/\{\{([\w\._]+)\}\}/g, (m, key) => {
               return this.obtenerValor(item, key);
             });
           })
@@ -67,8 +112,7 @@ class TemplateEngine {
     );
 
     // Procesar variables globales del objeto data
-    resultado = resultado.replace(/\{\{([\w\.]+)\}\}/g, (match, key) => {
-      // Evitamos procesar {{content}} si por alguna razón sigue ahí
+    resultado = resultado.replace(/\{\{([\w\._]+)\}\}/g, (match, key) => {
       if (key === "content") return match;
       return this.obtenerValor(data, key);
     });
@@ -77,6 +121,8 @@ class TemplateEngine {
   }
 
   obtenerValor(obj, key) {
+    if (key === "this") return String(obj);
+
     if (key.includes(".")) {
       return key.split(".").reduce((o, i) => (o ? o[i] : ""), obj) || "";
     }

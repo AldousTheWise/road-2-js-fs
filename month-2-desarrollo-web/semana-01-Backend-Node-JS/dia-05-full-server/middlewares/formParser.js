@@ -1,14 +1,19 @@
 const formParser = async (context, next) => {
-  const contentType = context.request.headers["content-type"];
+  const contentType = context.request.headers["content-type"] || "";
 
-  if (contentType === "application/x-www-form-urlencoded") {
+  // Solo procesamos si no se ha procesado el body antes y es el tipo correcto
+  if (contentType.includes("application/x-www-form-urlencoded")) {
     let body = "";
-
     for await (const chunk of context.request) {
       body += chunk;
     }
-
-    context.body = Object.fromEntries(new URLSearchParams(body));
+    // Decodificar correctamente caracteres especiales
+    const params = new URLSearchParams(body);
+    const data = {};
+    for (const [key, value] of params) {
+      data[key] = value;
+    }
+    context.body = data;
   }
 
   if (next) await next();
