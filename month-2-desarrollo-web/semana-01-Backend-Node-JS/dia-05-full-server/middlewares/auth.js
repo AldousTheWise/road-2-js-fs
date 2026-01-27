@@ -32,7 +32,6 @@ class AuthService {
 
   async findUserByEmail(email) {
     if (!email) return null;
-    // Normalizamos para evitar errores de mayúsculas o espacios
     const cleanEmail = email.trim().toLowerCase();
     return this.users.find(
       (user) => user.email.trim().toLowerCase() === cleanEmail,
@@ -43,10 +42,8 @@ class AuthService {
     return this.users.find((user) => user.id === id);
   }
 
-  // CORRECCIÓN: Ahora es asíncrona correctamente y limpia los datos
   async validatePassword(plainPassword, hashedPassword) {
     if (!plainPassword || !hashedPassword) return false;
-    // Limpiamos posibles saltos de línea del JSON o espacios del input
     return await bcrypt.compare(
       String(plainPassword).trim(),
       String(hashedPassword).trim(),

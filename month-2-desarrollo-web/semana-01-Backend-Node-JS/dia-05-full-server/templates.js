@@ -6,9 +6,6 @@ class TemplateEngine {
     this.viewsPath = viewsPath;
   }
 
-  /**
-   * Método principal de renderizado corregido
-   */
   async render(templateName, data = {}) {
     try {
       // 1. Cargar Layout
@@ -25,7 +22,6 @@ class TemplateEngine {
       // 4. Cargar componentes dinámicos (Partials)
       html = await this.cargarComponentes(html);
 
-      // 5. ORDEN CRÍTICO:
       // Primero procesamos los Each (que ahora procesan sus propios condicionales internos)
       html = this.procesarVariablesYEach(html, data);
 

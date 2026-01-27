@@ -19,13 +19,11 @@ class StaticServer {
     };
   }
 
-  // MÉTODO 1: El servidor de archivos con caché e inteligencia de rutas
   async serve(request, response, parsedPathName) {
     const pathname =
       parsedPathName ||
       new URL(request.url, `http://request.headers.host`).pathname;
 
-    // Si ya está en caché, lo servimos de inmediato
     if (this.cache.has(pathname)) {
       const { content, contentType } = this.cache.get(pathname);
       this.sendResponse(response, 200, contentType, content);
@@ -33,7 +31,7 @@ class StaticServer {
     }
 
     let filePath;
-    // Lógica de mapeo para tu tree
+
     if (pathname.startsWith("/static/")) {
       filePath = path.join(process.cwd(), "public", pathname);
     } else if (pathname.startsWith("/uploads/")) {
@@ -47,7 +45,6 @@ class StaticServer {
       const ext = path.extname(filePath).toLowerCase();
       const contentType = this.mimeTypes[ext] || "application/octet-stream";
 
-      // Guardar en caché (solo archivos estáticos, no uploads para ahorrar RAM)
       if (pathname.startsWith("/static/")) {
         this.cache.set(pathname, { content, contentType });
       }
@@ -62,7 +59,6 @@ class StaticServer {
     }
   }
 
-  // MÉTODO 2: Envío de respuestas centralizado
   sendResponse(response, statusCode, contentType, content) {
     response.writeHead(statusCode, {
       "Content-Type": contentType,
@@ -72,14 +68,12 @@ class StaticServer {
     response.end(content);
   }
 
-  // MÉTODO 3: Manejo de errores consistente
   sendError(response, statusCode, message) {
     response.writeHead(statusCode, { "Content-Type": "text/plain" });
     response.end(`${statusCode} - ${message}`);
     return true;
   }
 
-  // MÉTODO 4: Preload de archivos críticos (CSS/JS base)
   async preload(files) {
     for (const file of files) {
       // El file debe venir como '/static/css/base.css'

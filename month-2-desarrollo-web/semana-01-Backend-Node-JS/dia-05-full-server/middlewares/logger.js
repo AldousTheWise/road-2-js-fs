@@ -1,5 +1,6 @@
 // middlewares/logger.js
-const fs = require("fs").promises;
+const fs = require("fs");
+const fsPromises = fs.promises;
 const path = require("path");
 
 class Logger {
@@ -12,7 +13,7 @@ class Logger {
 
   async init() {
     try {
-      await fs.mkdir(this.logDir, { recursive: true });
+      await fsPromises.mkdir(this.logDir, { recursive: true });
       console.log(`Directorio de logs creado en: ${this.logDir}`);
     } catch (error) {
       console.error("Error al crear logs:", error.message);
@@ -25,12 +26,11 @@ class Logger {
 
     console.log(logMessage.trim());
 
-    // Escribir en archivo solo si se solicita
     if (logToFile) {
       try {
         const filePath =
           level === "ERROR" ? this.errorLogPath : this.accessLogPath;
-        await fs.appendFile(filePath, logMessage + "\n");
+        await fsPromises.appendFile(filePath, logMessage + "\n");
       } catch (error) {
         console.error("Error al escribir log:", error.message);
       }
@@ -57,7 +57,6 @@ class Logger {
 // Instancia global
 const logger = new Logger();
 
-// Middleware de logging SIMPLE (para empezar)
 function requestLogger(context, next) {
   const startTime = Date.now();
   const { method, url } = context.request;

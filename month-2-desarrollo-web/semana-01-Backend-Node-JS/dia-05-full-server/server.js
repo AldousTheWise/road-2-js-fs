@@ -274,20 +274,6 @@ router.get("/productos/:id", async (context) => {
     session: session,
   });
 
-  // >>> AQUÍ ES EL LUGAR ESPECÍFICO PARA EL LOG <<<
-  console.log("--- DEBUG START ---");
-  console.log("¿Hay sesión?:", !!session.nombre);
-  console.log("Rol de sesión:", session.rol);
-  // Solo vemos la primera review para no inundar la terminal
-  if (templateData.listaReviews.length > 0) {
-    console.log("Datos de la primera Review:", {
-      usuario: templateData.listaReviews[0].usuario,
-      puedeBorrar: templateData.listaReviews[0].puedeBorrar, // Debería decir "true"
-      parentId: templateData.listaReviews[0].parentId,
-    });
-  }
-  console.log("--- DEBUG END ---");
-
   const html = await templates.render("producto-detalle", templateData);
   context.response.writeHead(200, { "Content-Type": "text/html" });
   context.response.end(html);

@@ -1,5 +1,6 @@
 // middlewares/staticFiles.js
-const fs = require("fs").promises;
+const fs = require("fs");
+const fsPromises = fs.promises;
 const path = require("path");
 
 function getContentType(ext) {
@@ -32,7 +33,7 @@ async function staticFiles(context, next) {
     const filePath = path.join(__dirname, "../public", pathname);
 
     try {
-      const stat = await fs.stat(filePath);
+      const stat = await fsPromises.stat(filePath);
 
       if (stat.isFile()) {
         const ext = path.extname(filePath).toLowerCase();
@@ -45,14 +46,21 @@ async function staticFiles(context, next) {
 
         const stream = fs.createReadStream(filePath);
         stream.pipe(response);
-        return; // NO llamar next()
+        return;
       }
     } catch (error) {
-      // Archivo no encontrado, continuar
+      if (error.code === "ENOENT") {
+        response.writeHead(404, { "Content-Type": "text/plain" });
+        return response.end("Archivo estatico no encontrado");
+      }
+
+      console.error("Error sirviendo archivo estatico:", error);
+      response.writeHead(500, { "Content-Type": "text/plain" });
+      return response.end("Error interno del servidor");
     }
   }
 
-  next(); // Pasar al siguiente middleware
+  next();
 }
 
 module.exports = staticFiles;
