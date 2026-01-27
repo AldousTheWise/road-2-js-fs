@@ -5,7 +5,8 @@
     "nombre": "Laptop Gaming",
     "descripcion": "Laptop optimizada para Gaming, marca de prestigio",
     "precio": 1200,
-    "categoria": "Electrónica"
+    "categoria": "Electrónica",
+    "reviews": []
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440000",
@@ -33,8 +34,8 @@
   },
   {
     "id": "0751e5ff-d25e-4505-8c72-3dc56c8a8c5b",
-    "nombre": "Buta-Chan",
-    "categoria": "Heroe",
+    "nombre": "Puchin, el sumito",
+    "categoria": "Legend",
     "descripcion": "Chanchito hermoso",
     "precio": 3000,
     "imagen": "/static/images/1769058195861-lebb.jpg",

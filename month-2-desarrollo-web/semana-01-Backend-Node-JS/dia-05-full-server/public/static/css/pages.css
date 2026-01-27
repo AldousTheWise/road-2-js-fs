@@ -31,34 +31,213 @@
 
 /* PRODUCTO DETALLE */
 .producto-detalle {
+  position: relative; /* Para el botón de edición absoluto */
   background: #fff;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   max-width: 800px;
   margin: 2rem auto;
-  display: flex; /* Para poder usar flex-direction */
+  display: flex;
   flex-direction: column;
-  align-items: center; /* Centra el contenido */
+  align-items: center;
   text-align: center;
+  transition: all 0.3s ease;
+}
+
+/* ==========================================================================
+   MODO VISTA (Lectura)
+   ========================================================================== */
+.view-mode-content {
+  width: 100%;
 }
 
 .producto-detalle .producto-img {
   width: 100%;
   max-width: 500px;
-  height: auto; /* Cambiado de 300px fijo para no deformar */
-  margin: 0 auto 2rem auto;
+  height: auto;
+  margin: 0 auto 1.5rem auto;
   border-radius: 10px;
   object-fit: cover;
+  border: 1px solid #f0f0f0;
+}
+
+.producto-detalle h2 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.producto-detalle .categoria {
+  color: #666;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 1.5rem;
 }
 
 .producto-info {
-  margin: 2rem 0;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: #f9f9f9;
+  border-radius: 8px;
+  width: 100%;
 }
 
-.producto-info p {
-  margin: 0.5rem 0;
+.producto-info .descripcion {
   font-size: 1.1rem;
+  line-height: 1.6;
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+.producto-info .precio {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--primary, #007bff);
+}
+
+/* producto-detalle modo edición */
+.edit-mode-form {
+  display: none; /* Oculto por defecto */
+  width: 100%;
+  text-align: left; /* Alineación natural para formularios */
+}
+
+/* Estado Activo de Edición */
+.producto-detalle.editing .view-mode-content {
+  display: none;
+}
+
+.producto-detalle.editing .edit-mode-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.edit-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.edit-group label {
+  font-weight: 600;
+  color: #444;
+  font-size: 0.95rem;
+}
+
+.edit-group small {
+  color: #888;
+  font-style: italic;
+}
+
+.admin-input,
+.admin-textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.admin-input:focus,
+.admin-textarea:focus {
+  border-color: var(--primary, #007bff);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.admin-textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+/* producto-detalle botones y acciones */
+.producto-detalle .btn-edit-toggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: #333;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.producto-detalle .btn-edit-toggle:hover {
+  background-color: #000;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Contenedor de acciones del formulario */
+.producto-detalle .edit-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #eee; /* Separación visual del form */
+}
+
+/* Botón Guardar específico del detalle */
+.producto-detalle .edit-actions .btn-save {
+  background-color: #28a745;
+  color: white;
+  padding: 12px 28px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2);
+}
+
+.producto-detalle .edit-actions .btn-save:hover {
+  background-color: #218838;
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
+/* Botón Cancelar específico del detalle */
+.producto-detalle .edit-actions .btn-cancel {
+  background-color: #f8f9fa;
+  color: #6c757d;
+  padding: 12px 28px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.producto-detalle .edit-actions .btn-cancel:hover {
+  background-color: #e2e6ea;
+  color: #343a40;
+  border-color: #adb5bd;
+}
+
+/* Botón Volver (Link) */
+.producto-detalle .view-mode-content .btn-secondary {
+  display: inline-block;
+  margin-top: 1rem;
+  background-color: transparent;
+  color: #6c757d;
+  text-decoration: none;
+  font-size: 0.95rem;
+  border-bottom: 1px solid transparent;
+  transition: all 0.2s;
+}
+
+.producto-detalle .view-mode-content .btn-secondary:hover {
+  color: var(--primary, #007bff);
+  border-bottom-color: var(--primary, #007bff);
 }
 
 /* ABOUT */

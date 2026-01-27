@@ -11,6 +11,7 @@ const Router = require("./router.js");
 const TemplateEngine = require("./templates.js");
 const StaticServer = require("./static-server.js");
 const middlewares = require("./middlewares");
+const { authService } = require("./middlewares/auth.js");
 
 const router = new Router();
 const templates = new TemplateEngine();
@@ -44,6 +45,25 @@ function cargarProductos() {
 
 cargarProductos();
 
+// === GESTIÓN USUARIOS ===
+
+const usuariosPath = path.join(__dirname, "data", "users.json");
+let usuarios = [];
+
+function cargarUsuarios() {
+  try {
+    const data = fs.readFileSync(usuariosPath, "utf8");
+    usuarios = JSON.parse(data);
+    console.log(`[SISTEMA] Usuarios en memoria: ${usuarios.length}`);
+    return usuarios;
+  } catch (error) {
+    console.error("Error al leer users.json", error.message);
+    return [];
+  }
+}
+
+cargarUsuarios();
+
 // Helper para datos de autenticación
 function getAuthData(context) {
   const session = context.session;
@@ -69,7 +89,12 @@ function prepareAlert(queryOrObject) {
     queryOrObject.success === "true" ||
     queryOrObject.registered === "true" ||
     queryOrObject.logout === "true";
-  const esError = queryOrObject.error || queryOrObject.tipo === "error";
+
+  // Evaluamos si existe el parámetro error
+  const esError =
+    queryOrObject.error === "true" ||
+    queryOrObject.error ||
+    queryOrObject.tipo === "error";
 
   if (esExito) {
     tipo = "success";
@@ -79,9 +104,10 @@ function prepareAlert(queryOrObject) {
       Creado: "Producto ingresado exitosamente",
       RegistroExitoso: "Cuenta creada exitosamente",
       SesionCerrada: "Has cerrado sesión correctamente",
+      RolActualizado: "Usuario actualizado exitosamente",
+      UsuarioEliminado: "Usuario eliminado exitosamente",
     };
 
-    // Lógica para elegir la clave correcta
     let clave = queryOrObject.mensaje;
     if (queryOrObject.registered === "true") clave = "RegistroExitoso";
     if (queryOrObject.logout === "true") clave = "SesionCerrada";
@@ -94,12 +120,23 @@ function prepareAlert(queryOrObject) {
       LoginError: "Email o contraseña incorrectos",
       AuthRequerida: "Debes iniciar sesión para acceder",
       Falta_Imagen: "Debes subir una imagen para el producto",
+      PasswordNotFound: "Debes ingresar contraseña para confirmar",
+      NoCambioDeRol: "No puedes cambiar tu rol",
+      UserNoEncontrado: "Usuario no encontrado",
+      NoAutoEliminacion: "No puedes eliminar tu propia cuenta",
+      ErrorAlEliminar: "No se pudo eliminar el usuario",
     };
 
-    const rawError = queryOrObject.error || queryOrObject.mensaje;
-    // AQUÍ ESTABA EL FALLO: Ahora sí asignamos el mensaje final
+    // CORRECCIÓN AQUÍ:
+    // Si 'mensaje' existe en la URL, lo usamos. Si no, usamos 'error' siempre que no sea "true".
+    let claveError = queryOrObject.mensaje;
+    if (!claveError || claveError === "true") {
+      claveError = queryOrObject.error;
+    }
+
     mensajeFinal =
-      erroresPersonalizados[rawError] || rawError || "Ha ocurrido un error";
+      erroresPersonalizados[claveError] ||
+      (claveError !== "true" ? claveError : "Ha ocurrido un error");
   }
 
   if (!tipo) return { alerta: false };
@@ -181,8 +218,13 @@ router.get("/productos", async (context) => {
 // Detalle de producto
 router.get("/productos/:id", async (context) => {
   const { params } = context;
-  const id = params.id; // Ya no usamos parseInt porque usamos uuidv4 (string)
-  const producto = productos.find((p) => p.id === id);
+  const id = params.id;
+  const session = context.session || {};
+
+  // 1. CARGAR SIEMPRE DESDE EL ARCHIVO
+  // Esto asegura que veas las reseñas recién publicadas
+  const productosActualizados = cargarProductos();
+  const producto = productosActualizados.find((p) => p.id === id);
 
   if (!producto) {
     const templateData = buildTemplateData(context, {
@@ -194,14 +236,138 @@ router.get("/productos/:id", async (context) => {
     return;
   }
 
+  // 2. PROCESAR REVIEWS
+  const reviews = (producto.reviews || []).map((r) => {
+    // Validamos permisos
+    const esAdmin = session.rol === "admin";
+    const esDueno = session.userId && r.usuarioId === session.userId;
+
+    return {
+      ...r,
+      estrellas: "★".repeat(r.rating) + "☆".repeat(5 - r.rating),
+      // Para tu TemplateEngine, enviamos "true" como string o vacío
+      puedeBorrar: esAdmin || esDueno ? "true" : "",
+      // Inyectamos el ID del producto en cada review para evitar el uso de ../
+      parentId: producto.id,
+    };
+  });
+
+  // 3. CALCULAR PROMEDIO
+  let promedio = 0;
+  let estrellasPromedio = "☆☆☆☆☆";
+
+  if (reviews.length > 0) {
+    const suma = reviews.reduce((acc, r) => acc + r.rating, 0);
+    promedio = (suma / reviews.length).toFixed(1);
+    const numEstrellas = Math.round(parseFloat(promedio));
+    estrellasPromedio = "★".repeat(numEstrellas) + "☆".repeat(5 - numEstrellas);
+  }
+
+  // 4. PREPARAR DATA PARA EL MOTOR
   const templateData = buildTemplateData(context, {
     titulo: producto.nombre,
     producto: producto,
+    listaReviews: reviews,
+    promedioRating: promedio,
+    estrellasPromedio: estrellasPromedio,
+    totalReviews: reviews.length,
+    session: session,
   });
+
+  // >>> AQUÍ ES EL LUGAR ESPECÍFICO PARA EL LOG <<<
+  console.log("--- DEBUG START ---");
+  console.log("¿Hay sesión?:", !!session.nombre);
+  console.log("Rol de sesión:", session.rol);
+  // Solo vemos la primera review para no inundar la terminal
+  if (templateData.listaReviews.length > 0) {
+    console.log("Datos de la primera Review:", {
+      usuario: templateData.listaReviews[0].usuario,
+      puedeBorrar: templateData.listaReviews[0].puedeBorrar, // Debería decir "true"
+      parentId: templateData.listaReviews[0].parentId,
+    });
+  }
+  console.log("--- DEBUG END ---");
 
   const html = await templates.render("producto-detalle", templateData);
   context.response.writeHead(200, { "Content-Type": "text/html" });
   context.response.end(html);
+});
+
+router.post("/productos/review/:id", async (context) => {
+  const { id } = context.params;
+  const { rating, comentario, nombreInvitado, emailInvitado } = context.body;
+  const session = context.session || {};
+
+  // Datos de sesión > Datos de formulario (guest)
+  const autorNombre = session.nombre || nombreInvitado;
+  const autorEmail = session.email || emailInvitado;
+  const autorId = session.userId || null;
+
+  if (!autorNombre || !autorEmail) {
+    context.response.writeHead(302, {
+      Location: `/productos/${id}?error=IdentificacionRequerida`,
+    });
+    return context.response.end();
+  }
+
+  const productos = cargarProductos();
+  const index = productos.findIndex((p) => p.id == id);
+
+  if (index !== -1) {
+    if (!productos[index].reviews) productos[index].reviews = [];
+
+    productos[index].reviews.push({
+      id: Date.now(),
+      usuarioId: autorId,
+      usuario: autorNombre,
+      email: autorEmail,
+      rating: parseInt(rating),
+      comentario: comentario,
+      fecha: new Date().toLocaleDateString("es-ES"),
+    });
+
+    await fsPromise.writeFile(
+      productosPath,
+      JSON.stringify(productos, null, 2),
+    );
+  }
+
+  context.response.writeHead(302, { Location: `/productos/${id}` });
+  context.response.end();
+});
+
+router.post("/productos/eliminar-review/:prodId/:reviewId", async (context) => {
+  const { prodId, reviewId } = context.params;
+  const session = context.session || {};
+
+  const productos = cargarProductos();
+  const prodIndex = productos.findIndex((p) => p.id == prodId);
+
+  if (prodIndex !== -1) {
+    const reviewIndex = productos[prodIndex].reviews.findIndex(
+      (r) => r.id == reviewId,
+    );
+    const review = productos[prodIndex].reviews[reviewIndex];
+
+    const esAdmin = session.rol === "admin";
+    const esDueno = review.usuarioId && review.usuarioId === session.userId;
+
+    if (esAdmin || esDueno) {
+      productos[prodIndex].reviews.splice(reviewIndex, 1);
+      await fsPromise.writeFile(
+        productosPath,
+        JSON.stringify(productos, null, 2),
+      );
+      context.response.writeHead(302, {
+        Location: `/productos/${prodId}?success=Eliminado`,
+      });
+    } else {
+      context.response.writeHead(302, {
+        Location: `/productos/${prodId}?error=NoPermitido`,
+      });
+    }
+  }
+  context.response.end();
 });
 
 // Acerca de
@@ -276,6 +442,17 @@ router.get("/api/productos/:id", (context) => {
   context.response.end(JSON.stringify(producto));
 });
 
+// API Usuarios
+router.get("/api/admin/usuarios", (context) => {
+  const auth = getAuthData(context);
+  if (!auth.esAdmin) {
+    context.response.writeHead(403);
+    return context.response.end(JSON.stringify({ error: "Acceso denegado" }));
+  }
+
+  context.response.end(JSON.stringify(usuarios));
+});
+
 // === AUTENTICACIÓN Y LOGIN ===
 
 // Login - GET
@@ -306,7 +483,7 @@ router.post("/login", async (context) => {
   const { email, password } = context.body;
 
   try {
-    const user = await middlewares.authService.authenticate(email, password);
+    const user = await authService.authenticate(email, password);
 
     if (!user) {
       const templateData = buildTemplateData(context, {
@@ -316,11 +493,16 @@ router.post("/login", async (context) => {
 
       const html = await templates.render("login", templateData);
       context.response.writeHead(401, { "Content-Type": "text/html" });
-      context.response.end(html);
-      return;
+      return context.response.end(html);
     }
 
-    const { sessionId } = context.sessionManager.createSession(user);
+    const { sessionId } = context.sessionManager.createSession({
+      id: user.id,
+      nombre: user.nombre,
+      rol: user.rol,
+      email: user.email,
+    });
+
     const cookie = `sessionId=${sessionId}; HttpOnly; Path=/; Max-Age=86400; SameSite=Lax`;
 
     context.response.writeHead(302, {
@@ -385,6 +567,56 @@ router.get("/perfil", async (context) => {
   context.response.end(html);
 });
 
+// Editar perfil
+router.post("/perfil/actualizar", async (context) => {
+  if (!context.session) {
+    context.response.writeHead(302, { Location: "/login" });
+    return context.response.end();
+  }
+
+  const { nombre, email, passwordActual, passwordNueva } = context.body;
+  const userId = context.session.id;
+
+  const user = await authService.findUserById(userId);
+
+  if (!user) return context.response.end("Usuario no encontrado");
+
+  const isCurrentValid = await authService.validatePassword(
+    passwordActual || "",
+    user.password,
+  );
+
+  if (!isCurrentValid) {
+    context.response.writeHead(302, {
+      Location: "/perfil?error=true&mensaje=PasswordNotFound",
+    });
+    return context.response.end();
+  }
+
+  const index = authService.users.findIndex((u) => u.id == userId);
+
+  if (index !== -1) {
+    authService.users[index].nombre = nombre.trim();
+    authService.users[index].email = email.trim().toLowerCase();
+
+    if (passwordNueva && passwordNueva.trim().length > 0) {
+      authService.users[index].password =
+        await authService.hashPassword(passwordNueva);
+    }
+
+    await authService.saveUsers();
+
+    context.session.nombre = authService.users[index].nombre;
+    context.session.email = authService.users[index].email;
+    context.response.writeHead(302, {
+      Location: "/perfil?success=true&mensaje=Perfil actualizado",
+    });
+    context.response.end();
+  } else {
+    context.response.end("Error crítico: Usuario no encontrado");
+  }
+});
+
 // === REGISTRO ===
 
 // Registro - GET
@@ -414,7 +646,7 @@ router.post("/register", async (context) => {
       throw new Error("Las contraseñas no coinciden");
     }
 
-    await middlewares.authService.registerUser({
+    await authService.registerUser({
       nombre,
       email,
       password,
@@ -439,6 +671,7 @@ router.post("/register", async (context) => {
 });
 
 // === ADMIN ===
+
 // Listar productos en el panel
 router.get("/admin", async (context) => {
   const auth = getAuthData(context);
@@ -447,11 +680,15 @@ router.get("/admin", async (context) => {
     return context.response.end();
   }
 
-  const listaRenderizada = cargarProductos();
+  const listaProductos = cargarProductos();
+  const listaUsuarios = cargarUsuarios();
+
   const templateData = buildTemplateData(context, {
     titulo: "Panel de Administración",
-    listaProductos: [...listaRenderizada].reverse(),
-    totalProductos: listaRenderizada.length,
+    listaProductos: [...listaProductos].reverse(),
+    totalProductos: listaProductos.length,
+    listaUsuarios: listaUsuarios,
+    totalUsuarios: listaUsuarios.length,
     nombreAdmin: context.session.nombre,
     fecha: new Date().toLocaleDateString("es-ES"),
   });
@@ -460,6 +697,8 @@ router.get("/admin", async (context) => {
   context.response.writeHead(200, { "Content-Type": "text/html" });
   context.response.end(html);
 });
+
+// === ADMIN/PRODUCTOS ===
 
 // Agregar producto nuevo
 router.post("/admin/productos", async (context) => {
@@ -487,7 +726,7 @@ router.post("/admin/productos", async (context) => {
   context.response.end();
 });
 
-// Editar producto existente
+// Editar producto existente desde dashboard de admin
 router.post("/admin/productos/editar/:id", async (context) => {
   const { id } = context.params;
   const { nombre, precio, categoria } = context.body;
@@ -508,6 +747,34 @@ router.post("/admin/productos/editar/:id", async (context) => {
   context.response.end();
 });
 
+// Editar producto desde la página de descripción del producto
+router.post("/admin/productos/editar-completo/:id", async (context) => {
+  const { id } = context.params;
+  const { nombre, precio, categoria, descripcion } = context.body;
+
+  const index = productos.findIndex((p) => p.id === id);
+  if (index != -1) {
+    productos[index].nombre = nombre;
+    productos[index].precio = parseFloat(precio);
+    productos[index].categoria = categoria;
+    productos[index].descripcion = descripcion;
+
+    if (context.file) {
+      productos[index].imagen = `/static/images/${context.file.filename}`;
+    }
+
+    await fsPromise.writeFile(
+      productosPath,
+      JSON.stringify(productos, null, 2),
+    );
+  }
+
+  context.response.writeHead(302, {
+    Location: `/productos/${id}?success=true`,
+  });
+  context.response.end();
+});
+
 // Eliminar producto
 router.post("/admin/productos/eliminar/:id", async (context) => {
   const { id } = context.params;
@@ -519,6 +786,88 @@ router.post("/admin/productos/eliminar/:id", async (context) => {
   context.response.writeHead(302, {
     Location: "/admin?success=true&mensaje=Eliminado",
   });
+  context.response.end();
+});
+
+// === ADMIN/USUARIOS ===
+
+// Lista de usuarios
+router.get("/admin/usuarios", async (context) => {
+  if (!getAuthData(context).esAdmin) {
+    context.response.writeHead(302, { Location: "/login?error=AuthRequerida" });
+    return context.response.end();
+  }
+
+  const usuarios = cargarUsuarios();
+  const templateData = buildTemplateData(context, {
+    titulo: "Gestión de Usuarios",
+    usuarios: usuarios,
+    totalUsuarios: usuarios.length,
+  });
+
+  const html = await templates.render("admin-usuarios", templateData);
+  context.response.writeHead(200, { "Content-Type": "text/html" });
+  context.response.end(html);
+});
+
+// Editar usuario desde admin
+router.post("/admin/usuarios/editar/:id", async (context) => {
+  const id = parseInt(context.params.id, 10);
+  const { rol } = context.body;
+  const sesionActual = context.session;
+
+  if (id === sesionActual.userId) {
+    context.response.writeHead(302, {
+      Location: "/admin?tab=usuarios&error=true&mensaje=NoCambioDeRol",
+    });
+    return context.response.end();
+  }
+
+  const usuarios = cargarUsuarios();
+  const index = usuarios.findIndex((u) => u.id === id);
+
+  if (index !== -1) {
+    usuarios[index].rol = rol;
+    await fsPromise.writeFile(usuariosPath, JSON.stringify(usuarios, null, 2));
+
+    context.response.writeHead(302, {
+      Location: "/admin?tab=usuarios&success=true&mensaje=RolActualizado",
+    });
+  } else {
+    context.response.writeHead(302, {
+      Location: "/admin?tab=usuarios&error=true&mensaje=UserNoEncontrado",
+    });
+  }
+  context.response.end();
+});
+
+// Eliminar usuario desde admin
+router.post("/admin/usuarios/eliminar/:id", async (context) => {
+  const id = parseInt(context.params.id, 10);
+  const sesionActual = context.session;
+
+  if (id === sesionActual.userId) {
+    context.response.writeHead(302, {
+      Location: "/admin?tab=usuarios&error=true&mensaje=NoAutoEliminacion",
+    });
+    return context.response.end();
+  }
+
+  let usuarios = cargarUsuarios();
+  const existe = usuarios.some((u) => u.id === id);
+
+  if (existe) {
+    usuarios = usuarios.filter((u) => u.id !== id);
+    await fsPromise.writeFile(usuariosPath, JSON.stringify(usuarios, null, 2));
+
+    context.response.writeHead(302, {
+      Location: "/admin?tab=usuarios&success=true&mensaje=UsuarioEliminado",
+    });
+  } else {
+    context.response.writeHead(302, {
+      Location: "/admin?tab=usuarios&error=true&mensaje=ErrorAlEliminar",
+    });
+  }
   context.response.end();
 });
 

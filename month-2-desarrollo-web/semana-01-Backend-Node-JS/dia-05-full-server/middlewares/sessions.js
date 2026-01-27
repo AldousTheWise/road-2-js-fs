@@ -17,7 +17,7 @@ class SessionManager {
     const expiresAt = Date.now() + this.SESSION_DURATION;
 
     this.sessions.set(sessionId, {
-      userId: user.id,
+      id: user.id,
       email: user.email,
       nombre: user.nombre,
       rol: user.rol,
@@ -25,7 +25,7 @@ class SessionManager {
     });
 
     Logger.info(
-      `Sesión creada para: ${user.email} (${sessionId.substring(0, 8)}...)`
+      `Sesión creada para: ${user.email} (${sessionId.substring(0, 8)}...)`,
     );
     return { sessionId, expiresAt };
   }
@@ -83,7 +83,7 @@ setInterval(
   () => {
     sessionManager.cleanupExpiredSessions();
   },
-  60 * 60 * 1000
+  60 * 60 * 1000,
 );
 
 // Middleware de sesiones

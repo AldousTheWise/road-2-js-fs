@@ -3,113 +3,176 @@
 <div class="admin-dashboard">
     <div class="welcome-banner">
         <h2>Bienvenido, {{session.nombre}}</h2>
-        <p>Desde aquí puedes gestionar la tienda.</p>
+        <p>Panel de control centralizado para la tienda.</p>
     </div>
 
-    <div class="detail-card">
-        <h3>Resumen de Inventario</h3>
-        <p><strong>{{totalProductos}}</strong> productos registrados actualmente.</p>
+    <nav class="admin-tabs">
+        <button class="tab-btn active" onclick="switchTab(event, 'tab-productos')">
+            Gestion de Productos
+        </button>
+        <button class="tab-btn" onclick="switchTab(event, 'tab-usuarios')">
+            Gestión de Usuarios
+        </button>
+    </nav>
+
+    <div id="tab-productos" class="tab-content active">
+        <div class="detail-card">
+            <h3>Resumen de Inventario</h3>
+            <p><strong>{{totalProductos}}</strong> productos registrados actualmente.</p>
+        </div>
+
+        <section class="product-upload-card">
+            <h3>Registrar Nuevo Producto</h3>
+            <form action="/admin/productos" method="POST" enctype="multipart/form-data">
+                <div class="admin-form-row">
+                    <div class="admin-control-group">
+                        <label>Nombre del Producto</label>
+                        <input type="text" name="nombre" class="admin-input" required>
+                    </div>
+                    <div class="admin-control-group">
+                        <label>Precio</label>
+                        <input type="number" step="0.01" name="precio" class="admin-input" required>
+                    </div>
+                </div>
+
+                <div class="admin-form-row">
+                    <div class="admin-control-group">
+                        <label>Categoría</label>
+                        <input type="text" name="categoria" class="admin-input" list="categorias-list"
+                            placeholder="Elegir o escribir nueva...">
+                        <datalist id="categorias-list">
+                            {{#each categorias}}
+                            <option value="{{this}}"></option>
+                            {{/each}}
+                        </datalist>
+                    </div>
+                    <div class="admin-control-group">
+                        <label>Imagen</label>
+                        <input type="file" name="imagen" class="admin-input" accept="image/*" required>
+                    </div>
+                </div>
+
+                <div class="admin-control-group">
+                    <label>Descripción</label>
+                    <textarea name="descripcion" class="admin-textarea"></textarea>
+                </div>
+
+                <button type="submit" class="btn-save-product">Guardar Producto</button>
+            </form>
+        </section>
+
+        <div class="admin-table-container">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Imagen</th>
+                        <th>Nombre</th>
+                        <th>Categoría</th>
+                        <th>Precio</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each listaProductos}}
+                    <tr id="row-{{id}}" data-id="{{id}}">
+                        <td><img src="{{imagen}}" class="admin-img-thumb"></td>
+
+                        <form id="form-edit-{{id}}" action="/admin/productos/editar/{{id}}" method="POST"></form>
+
+                        <td>
+                            <span class="view-mode">{{nombre}}</span>
+                            <input type="text" name="nombre" form="form-edit-{{id}}" class="edit-mode admin-input-sm"
+                                value="{{nombre}}">
+                        </td>
+
+                        <td>
+                            <span class="view-mode role-badge">{{categoria}}</span>
+                            <input type="text" name="categoria" form="form-edit-{{id}}" class="edit-mode admin-input-sm"
+                                value="{{categoria}}" list="categorias-list">
+                        </td>
+
+                        <td>
+                            <span class="view-mode"><strong>${{precio}}</strong></span>
+                            <input type="number" step="0.01" name="precio" form="form-edit-{{id}}"
+                                class="edit-mode admin-input-sm" value="{{precio}}">
+                        </td>
+
+                        <td>
+                            <div class="actions-cell">
+                                <a href="/productos/{{id}}" class="btn-action btn-view view-mode"
+                                    title="Ver detalles">Ver
+                                    detalles</a>
+                                <button type="button" class="btn-action btn-edit view-mode"
+                                    onclick="toggleEdit('{{id}}')" title="Editar">Editar</button>
+
+                                <form action="/admin/productos/eliminar/{{id}}" method="POST" class="view-mode"
+                                    style="display:inline">
+                                    <button type="submit" class="btn-action btn-delete"
+                                        onclick="return confirm('¿Eliminar producto?')">Eliminar</button>
+                                </form>
+
+                                <button type="submit" form="form-edit-{{id}}" class="btn-action btn-save edit-mode"
+                                    title="Guardar">Guardar</button>
+                                <button type="button" class="btn-action btn-cancel edit-mode"
+                                    onclick="toggleEdit('{{id}}')" title="Cancelar">Cancelar</button>
+                            </div>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    <section class="product-upload-card">
-        <h3>Registrar Nuevo Producto</h3>
-        <form action="/admin/productos" method="POST" enctype="multipart/form-data">
-            <div class="admin-form-row">
-                <div class="admin-control-group">
-                    <label>Nombre del Producto</label>
-                    <input type="text" name="nombre" class="admin-input" required>
-                </div>
-                <div class="admin-control-group">
-                    <label>Precio</label>
-                    <input type="number" step="0.01" name="precio" class="admin-input" required>
-                </div>
-            </div>
+    <div id="tab-usuarios" class="tab-content">
+        <div class="detail-card">
+            <h3>Gestión de Usuarios</h3>
+            <p><strong>{{totalUsuarios}}</strong> cuentas registradas en la plataforma.</p>
+        </div>
 
-            <div class="admin-form-row">
-                <div class="admin-control-group">
-                    <label>Categoría</label>
-                    <input type="text" name="categoria" class="admin-input" list="categorias-list"
-                        placeholder="Elegir o escribir nueva...">
-                    <datalist id="categorias-list">
-                        {{#each categorias}}
-                        <option value="{{this}}"></option>
-                        {{/each}}
-                    </datalist>
-                </div>
-                <div class="admin-control-group">
-                    <label>Imagen</label>
-                    <input type="file" name="imagen" class="admin-input" accept="image/*" required>
-                </div>
-            </div>
-
-            <div class="admin-control-group">
-                <label>Descripción</label>
-                <textarea name="descripcion" class="admin-textarea"></textarea>
-            </div>
-
-            <button type="submit" class="btn-save-product">Guardar Producto</button>
-        </form>
-    </section>
-
-    <div class="admin-table-container">
-        <table class="admin-table">
-            <thead>
-                <tr>
-                    <th>Imagen</th>
-                    <th>Nombre</th>
-                    <th>Categoría</th>
-                    <th>Precio</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#each listaProductos}}
-                <tr id="row-{{id}}" data-id="{{id}}">
-                    <td><img src="{{imagen}}" class="admin-img-thumb"></td>
-
-                    <form id="form-edit-{{id}}" action="/admin/productos/editar/{{id}}" method="POST"></form>
-
-                    <td>
-                        <span class="view-mode">{{nombre}}</span>
-                        <input type="text" name="nombre" form="form-edit-{{id}}" class="edit-mode admin-input-sm"
-                            value="{{nombre}}">
-                    </td>
-
-                    <td>
-                        <span class="view-mode role-badge">{{categoria}}</span>
-                        <input type="text" name="categoria" form="form-edit-{{id}}" class="edit-mode admin-input-sm"
-                            value="{{categoria}}" list="categorias-list">
-                    </td>
-
-                    <td>
-                        <span class="view-mode"><strong>${{precio}}</strong></span>
-                        <input type="number" step="0.01" name="precio" form="form-edit-{{id}}"
-                            class="edit-mode admin-input-sm" value="{{precio}}">
-                    </td>
-
-                    <td>
-                        <div class="actions-cell">
-                            <a href="/productos/{{id}}" class="btn-action btn-view view-mode" title="Ver detalles">Ver
-                                detalles</a>
-                            <button type="button" class="btn-action btn-edit view-mode" onclick="toggleEdit('{{id}}')"
-                                title="Editar">Editar</button>
-
-                            <form action="/admin/productos/eliminar/{{id}}" method="POST" class="view-mode"
-                                style="display:inline">
-                                <button type="submit" class="btn-action btn-delete"
-                                    onclick="return confirm('¿Eliminar producto?')">Eliminar</button>
-                            </form>
-
-                            <button type="submit" form="form-edit-{{id}}" class="btn-action btn-save edit-mode"
-                                title="Guardar">Guardar</button>
-                            <button type="button" class="btn-action btn-cancel edit-mode" onclick="toggleEdit('{{id}}')"
-                                title="Cancelar">Cancelar</button>
-                        </div>
-                    </td>
-                </tr>
-                {{/each}}
-            </tbody>
-        </table>
+        <div class="admin-table-container">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Rol Actual</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each listaUsuarios}}
+                    <tr id="row-{{id}}">
+                        <form id="form-edit-user-{{id}}" action="/admin/usuarios/editar/{{id}}" method="POST">
+                        </form>
+                        <td>{{nombre}}</td>
+                        <td>{{email}}</td>
+                        <td>
+                            <span class="view-mode role-badge">{{rol}}</span>
+                            <select name="rol" form="form-edit-user-{{id}}" class="edit-mode admin-input-sm" id="rol">
+                                <option value="user" {{#if (eq rol 'user' )}}selected{{/if}}>User</option>
+                                <option value="admin" {{#if (eq rol 'admin' )}}selected{{/if}}>Admin</option>
+                            </select>
+                        </td>
+                        <td>
+                            <div class="actions-cell">
+                                <button type="button" class=" btn-action btn-edit view-mode"
+                                    onclick="toggleEdit('{{id}}')">Cambiar Rol</button>
+                                <form action="/admin/usuarios/eliminar/{{id}}" method="POST" style="display:online">
+                                    <button type="submit" class="btn-action btn-delete view-mode"
+                                        onclick="return confirm('¿Eliminar este usuario permanentemente?')">Eliminar</button>
+                                </form>
+                                <button type="submit" form="form-edit-user-{{id}}"
+                                    class="btn-action btn-save edit-mode">Aplicar</button>
+                                <button type="button" class="btn-action btn-cancel edit-mode"
+                                    onclick="toggleEdit('{{id}}')">Cancelar</button>
+                            </div>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 

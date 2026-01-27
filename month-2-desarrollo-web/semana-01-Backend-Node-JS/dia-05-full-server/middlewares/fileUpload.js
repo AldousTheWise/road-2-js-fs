@@ -14,7 +14,7 @@ const fileUpload = async (context, next) => {
     return new Promise((resolve, reject) => {
       const busboy = Busboy({ headers: request.headers });
       context.body = {};
-      let writingFiles = []; // Para trackear las escrituras activas
+      let writingFiles = [];
 
       busboy.on("field", (name, val) => {
         context.body[name] = val;
@@ -22,7 +22,12 @@ const fileUpload = async (context, next) => {
 
       busboy.on("file", (name, file, info) => {
         const { filename, mimeType } = info;
-        // Limpiamos el nombre para evitar caracteres raros
+
+        if (!filename) {
+          file.resume();
+          return;
+        }
+
         const finalName = `${Date.now()}-${filename.replace(/\s+/g, "_")}`;
         const saveTo = path.join(
           __dirname,
@@ -31,14 +36,13 @@ const fileUpload = async (context, next) => {
         );
 
         context.file = {
-          filename: finalName, // Ahora coincide con tu server.js
+          filename: finalName,
           mimeType,
         };
 
         const writeStream = fs.createWriteStream(saveTo);
         file.pipe(writeStream);
 
-        // Creamos una promesa por cada archivo que se está escribiendo
         const promise = new Promise((res, rej) => {
           writeStream.on("finish", res);
           writeStream.on("error", rej);
@@ -48,7 +52,6 @@ const fileUpload = async (context, next) => {
 
       busboy.on("finish", async () => {
         try {
-          // ESPERAMOS a que todas las escrituras a disco terminen de verdad
           await Promise.all(writingFiles);
           if (next) await next();
           resolve();

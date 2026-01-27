@@ -29,6 +29,34 @@
         </div>
 
         <div class="detail-card">
+            <h2>Actualizar Datos</h2>
+            <form action="/perfil/actualizar" method="POST" class="admin-form">
+                <div class="control-group">
+                    <label>Nombre Completo</label>
+                    <input type="text" name="nombre" value="{{session.nombre}}" required class="admin-input">
+                </div>
+                <div class="control-group">
+                    <label>Email</label>
+                    <input type="email" name="email" value="{{session.email}}" required class="admin-input">
+                </div>
+
+                <hr>
+                <h3>Seguridad</h3>
+                <div class="control-group">
+                    <label>Contraseña Actual (Requerida para cambios)</label>
+                    <input type="password" name="passwordActual" class="admin-input" placeholder="********">
+                </div>
+                <div class="control-group">
+                    <label>Nueva Contraseña (Opcional)</label>
+                    <input type="password" name="passwordNueva" class="admin-input"
+                        placeholder="Dejar en blanco para no cambiar">
+                </div>
+
+                <button type="submit" class="btn-primary">Actualizar Perfil</button>
+            </form>
+        </div>
+
+        <div class="detail-card">
             <h3>Acciones</h3>
             <p>
                 <a href="/productos" class="btn-primary">Ver Productos</a>
@@ -45,4 +73,5 @@
             </p>
         </div>
     </div>
+
 </div>
