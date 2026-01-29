@@ -1,0 +1,13 @@
+# Dependencias
+node_modules/
+
+# Variables de entorno / Secretos
+.env
+
+# Logs y Cache
+npm-debug.log*
+.eslintcache
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db

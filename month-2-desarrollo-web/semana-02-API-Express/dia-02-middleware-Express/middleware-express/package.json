@@ -1,0 +1,41 @@
+{
+  "name": "middleware-express",
+  "version": "1.0.0",
+  "description": "Sistema de middleware extendido: Rate Limiting, Caché, i18n y Validación con Joi",
+  "main": "app-completa-middleware.js",
+  "scripts": {
+    "test": "node test.server.js",
+    "test:watch": "nodemon test.server.js",
+    "start": "node app-completa-middleware.js",
+    "dev": "nodemon app-completa-middleware.js"
+  },
+  "keywords": [
+    "express",
+  "middleware",
+  "joi-validation",
+  "rate-limiting",
+  "i18n",
+  "node-cache",
+  "rest-api",
+  "backend-practice"
+],
+  "author": "Aldo Yañez <aldo.yanez01@gmail.com>",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "compression": "1.8.1",
+    "cors": "2.8.6",
+    "express": "5.2.1",
+    "express-joi-validation": "6.1.0",
+    "express-rate-limit": "8.2.1",
+    "helmet": "8.1.0",
+    "i18next": "25.8.0",
+    "i18next-http-middleware": "3.9.2",
+    "joi": "17.13.3",
+    "node-cache": "5.1.2"
+  },
+  "devDependencies": {
+    "nodemon": "3.1.11",
+    "supertest": "7.2.2"
+  }
+}
